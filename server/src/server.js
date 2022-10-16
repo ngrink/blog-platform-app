@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import * as dotenv from 'dotenv';
 
 import { router } from "./server.router";
@@ -17,6 +18,13 @@ async function main() {
     try {
         const PORT = process.env.PORT || 5000;
 
+        mongoose.connect(
+            process.env.MONGO_URI,
+            { useNewUrlParser: true, useUnifiedTopology: true },
+            (error) => error
+                ? console.log(`[DB]`, error)
+                : console.log(`[DB] Connected to MongoDB`)
+        );
         app.listen(PORT, (error) => error
             ? console.log(`[Server]`, error)
             : console.log(`[Server] Server is started on PORT ${PORT}`)
