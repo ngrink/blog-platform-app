@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import * as dotenv from 'dotenv';
 
 import { router } from "./server.router";
+import { errorHandler } from "./error.handler";
 
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
@@ -12,6 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/", router);
+app.use(errorHandler)
 
 
 async function main() {
