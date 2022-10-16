@@ -1,9 +1,11 @@
 import express from "express";
 import * as dotenv from 'dotenv';
-dotenv.config({ path: `src/.env.${process.env.NODE_ENV}` });
 
 import { router } from "./server.router";
 
+
+dotenv.config({ path: `src/.env.${process.env.NODE_ENV}` });
+process.env.DEVELOPMENT = process.env.NODE_ENV === "development";
 
 const app = express();
 app.use(express.json());
