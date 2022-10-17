@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import morgan from "morgan";
 import * as dotenv from 'dotenv';
 
 import { router } from "./server.router";
@@ -10,6 +11,7 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 process.env.DEVELOPMENT = process.env.NODE_ENV === "development";
 
 const app = express();
+app.use(morgan("dev"))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/", router);
