@@ -1,4 +1,4 @@
-import { ApiError } from './ap.exceptions.js';
+import { ApiError } from './api.exceptions.js';
 
 
 function errorHandler(err, req, res, next) {
