@@ -1,5 +1,8 @@
 import express from "express";
-const router = express.Router({ mergeParams: true });
+import { AccountRouter } from "./modules/accounts/";
 
+
+const router = express.Router({ mergeParams: true });
+router.use("/accounts/", AccountRouter)
 
 export { router };
