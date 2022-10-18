@@ -14,6 +14,10 @@ export class ApiError extends Error {
         return new ApiError(400, message, errors);
     }
 
+    static ValidationError(errors=[]) {
+        return new ApiError(400, "Not all request fields are specified correctly", errors);
+    }
+
     static Unauthorized() {
         return new ApiError(401, "User not authorized");
     }
