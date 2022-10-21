@@ -9,9 +9,11 @@ export class AuthMiddleware {
             if (!accessToken) {
                 next(AuthError.Unauthorized());
             }
-
-            const data = await AuthTokenService.verifyAccessToken(accessToken);
-            req.token = data;
+            const validToken = await AuthTokenService.verifyAccessToken(accessToken);
+            if (!validToken) {
+                next(AuthError.Unauthorized());
+            }
+            req.token = validToken;
             next();
         } catch (e) {
             next(AuthError.Unauthorized())
