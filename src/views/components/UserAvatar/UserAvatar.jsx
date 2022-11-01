@@ -5,7 +5,7 @@ import cl from "./UserAvatar.module.scss";
 
 
 
-export const UserAvatar = ({ src, name, subtitle, spacing }) => {
+export const UserAvatar = ({ src, name, subtitle }) => {
   return (
     <div className={cl.avatarContainer} >
         <HStack gap="5px">
