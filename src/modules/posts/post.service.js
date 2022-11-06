@@ -27,7 +27,7 @@ export class PostService {
         const posts = data.map(item => {
             let post = item._doc;
             post.likes.isLikedByUser =  post.likes.items.includes(accountId);
-            post.comments.isCommentedByUser = post.comments.items.filter(c => c.author === accountId) > 0;
+            post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
             delete post.likes.items;
             delete post.comments.items;
 
