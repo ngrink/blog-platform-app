@@ -61,11 +61,25 @@ export class PostService {
     }
 
     static async likePost(accountId, postId) {
-        await PostModel.findByIdAndUpdate(postId, {$push: {likes: accountId}});
+        const post = await PostModel.findById(postId, {likes: 1})
+        if (post.likes.items.includes(accountId)) {
+            throw PostError.PostAlreadyLikedByUser()
+        }
+
+        post.likes.count += 1;
+        post.likes.items.push(accountId);
+        await post.save();
     }
 
     static async unlikePost(accountId, postId) {
-        await PostModel.findByIdAndUpdate(postId, {$pull: {likes: accountId}});
+        const post = await PostModel.findById(postId, {likes: 1})
+        if (!post.likes.items.includes(accountId)) {
+            throw PostError.PostNotLikedByUser()
+        }
+
+        post.likes.count -= 1;
+        post.likes.items = post.likes.items.filter(item => item !== accountId);
+        await post.save();
     }
 
     static async getPostComments(postId) {
