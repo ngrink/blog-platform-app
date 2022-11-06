@@ -38,10 +38,13 @@ export class PostService {
     }
 
     static async getPost(postId) {
-        const post = await PostModel.findById(
-            postId,
-            {comments: 0}
-        );
+        const post = await PostModel.findById(postId, {comments: 0});
+        if (!post) {
+            throw PostError.PostNotFound();
+        }
+
+        post.views += 1;
+        post.save();
         return post
     }
 
