@@ -76,7 +76,6 @@ export class PostController {
             const { postId } = req.params;
 
             const post = await PostService.likePost(accountId, postId);
-            console.log(post)
             res.status(200).json("OK");
         } catch (e) {
             next(e);
