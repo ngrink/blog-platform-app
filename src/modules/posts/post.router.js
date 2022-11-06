@@ -11,9 +11,11 @@ router.post("/",
     PostController.createPost
 )
 router.get("/",
+    [AuthMiddleware.optionalAuthorized],
     PostController.getAllPosts
 )
 router.get("/:postId",
+    [AuthMiddleware.optionalAuthorized],
     PostController.getPost
 )
 router.patch("/:postId",

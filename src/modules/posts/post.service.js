@@ -18,8 +18,22 @@ export class PostService {
         return post
     }
 
-    static async getAllPosts(filter) {
-        const posts = await PostModel.find(filter);
+    static async getAllPosts(accountId, options) {
+        const data = await PostModel.find(
+            {published: true},
+            {content: 0}
+        );
+
+        const posts = data.map(item => {
+            let post = item._doc;
+            post.likes.isLikedByUser =  post.likes.items.includes(accountId);
+            post.comments.isCommentedByUser = post.comments.items.filter(c => c.author === accountId) > 0;
+            delete post.likes.items;
+            delete post.comments.items;
+
+            return post
+        })
+
         return posts
     }
 
