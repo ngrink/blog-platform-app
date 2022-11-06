@@ -4,32 +4,42 @@ import { AuthTokenService } from './auth.token.service';
 
 export class AuthMiddleware {
     static async authorized(req, res, next) {
-        AuthMiddleware._parseToken(() => {
-            next(AuthError.Unauthorized());
-        });
-    }
-
-    static async optionalAuthorized(req, res, next) {
-        AuthMiddleware._parseToken(() => {
-            req.token = {};
-            next();
-        });
-    }
-
-    static async _parseToken(onError) {
         try {
             const { accessToken } = req.cookies;
             if (!accessToken) {
-                onError();
+                next(AuthError.Unauthorized());
             }
+
             const validToken = await AuthTokenService.verifyAccessToken(accessToken);
             if (!validToken) {
-                onError();
+                next(AuthError.Unauthorized());
             }
+
             req.token = validToken;
             next();
         } catch (e) {
-            onError();
+            next(AuthError.Unauthorized());
+        }
+    }
+
+    static async optionalAuthorized(req, res, next) {
+        try {
+            const { accessToken } = req.cookies;
+            if (!accessToken) {
+                req.token = {};
+                return next();
+            }
+
+            const validToken = await AuthTokenService.verifyAccessToken(accessToken);
+            if (!validToken) {
+                next(AuthError.Unauthorized());
+            }
+
+            req.token = validToken;
+            next();
+        } catch (e) {
+            req.token = {};
+            next();
         }
     }
 }
