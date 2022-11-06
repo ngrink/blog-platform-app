@@ -38,7 +38,10 @@ export class PostService {
     }
 
     static async getPost(postId) {
-        const post = await PostModel.findById(postId);
+        const post = await PostModel.findById(
+            postId,
+            {comments: 0}
+        );
         return post
     }
 
@@ -82,19 +85,31 @@ export class PostService {
         await post.save();
     }
 
-    static async getPostComments(postId) {
-        const comments = await PostModel.findById(postId, {comments: 1});
+    static async getPostComments(accountId, postId) {
+        const post = await PostModel.findById(postId, {comments: 1});
+        if (!post) {
+            throw PostError.PostNotFound();
+        }
+
+        const comments = post._doc.comments;
+        comments.isCommentedByUser = comments.items.filter(c => c.author === accountId) > 0;
         return comments
     }
 
     static async createPostComment(accountId, postId, comment) {
-        await PostModel.findByIdAndUpdate(
+        const post = await PostModel.findByIdAndUpdate(
             postId,
-            {$push: {comments: {
-                author: accountId,
-                comment
-            }}}
+            {
+                $inc: {"comments.count": 1},
+                $push: {"comments.items": {
+                    author: accountId,
+                    comment
+                }}
+            }
         );
+        if (!post) {
+            throw PostError.PostNotFound();
+        }
     }
 
     static async checkPostOwner(postId, accountId) {

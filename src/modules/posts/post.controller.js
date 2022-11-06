@@ -96,9 +96,10 @@ export class PostController {
 
     static async getPostComments(req, res, next) {
         try {
+            const { accountId } = req.token;
             const { postId } = req.params;
 
-            const comments = await PostService.getPostComments(postId);
+            const comments = await PostService.getPostComments(accountId, postId);
             res.status(200).json(comments);
         } catch (e) {
             next(e);

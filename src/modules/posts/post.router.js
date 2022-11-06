@@ -42,7 +42,7 @@ router.post("/:postId/unlike",
     PostController.unlikePost
 )
 router.get("/:postId/comments",
-    [AuthMiddleware.authorized],
+    [AuthMiddleware.optionalAuthorized],
     PostController.getPostComments
 )
 router.post("/:postId/comments",
