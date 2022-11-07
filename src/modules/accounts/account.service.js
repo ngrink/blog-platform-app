@@ -1,12 +1,13 @@
 import Joi from "joi";
 import bcrypt from "bcrypt";
 
+import { AccountValidator } from "./account.validator";
 import { AccountModel } from "./account.model";
 import { AccountError } from "./account.exceptions";
 
 
 export class AccountService {
-    static async createAccount(username, email, password, confirmPassword) {
+    static async createAccount(username, email, password, confirmPassword, profile) {
         const validation = Joi.object({
             username: Joi.string()
                 .alphanum()
@@ -19,9 +20,13 @@ export class AccountService {
             password: Joi.string()
                 .pattern(new RegExp("^[a-zA-Z0-9]{8,100}$"))
                 .required(),
-            confirmPassword: Joi.ref('password')
+            confirmPassword: Joi.ref('password'),
+            profile: Joi.object({
+                fullname: Joi.string()
+                    .required()
+            })
         }).validate(
-            { username, email, password, confirmPassword },
+            { username, email, password, confirmPassword, profile},
             { abortEarly: false, allowUnknown: false, presence: "required" }
         );
 
@@ -43,9 +48,30 @@ export class AccountService {
         const account = await AccountModel.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            profile
         })
 
         return account
+    }
+
+    static async getProfile(accountId) {
+        const account = await AccountModel.findOne({accountId}, {profile: 1});
+        return account.profile
+    }
+
+    static async updateProfile(accountId, data) {
+        AccountValidator.updateProfile(data);
+
+        const account = await AccountModel.findOneAndUpdate(
+            {accountId},
+            {profile: data},
+            {new: true}
+        );
+        if (!account) {
+            throw AccountError.NotFound();
+        }
+
+        return account.profile
     }
 }

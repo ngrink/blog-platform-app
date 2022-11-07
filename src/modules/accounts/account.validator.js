@@ -2,7 +2,7 @@ import Joi from "joi";
 import { ApiError } from "../../api.exceptions";
 
 
-export class ProfileValidator {
+export class AccountValidator {
     static updateProfile(data) {
         const validation = Joi.object({
             fullname: Joi.string(),
