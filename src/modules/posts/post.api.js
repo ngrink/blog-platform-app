@@ -23,22 +23,22 @@ export class PostAPI {
     }
 
     static async publicatePost(postId) {
-        return await $axios.delete(`/posts/${postId}/publish`)
+        return await $axios.post(`/posts/${postId}/publish`)
     }
 
     static async likePost(postId) {
-        return await $axios.delete(`/posts/${postId}/like`)
+        return await $axios.post(`/posts/${postId}/like`)
     }
 
     static async unlikePost(postId) {
-        return await $axios.delete(`/posts/${postId}/unlike`)
+        return await $axios.post(`/posts/${postId}/unlike`)
     }
 
     static async getPostComments(postId) {
-        return await $axios.delete(`/posts/${postId}/comments`)
+        return await $axios.get(`/posts/${postId}/comments`)
     }
 
     static async createPostComment(postId, commentData) {
-        return await $axios.delete(`/posts/${postId}/comments`, {...commentData})
+        return await $axios.post(`/posts/${postId}/comments`, {...commentData})
     }
 }
