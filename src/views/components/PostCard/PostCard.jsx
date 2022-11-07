@@ -38,7 +38,9 @@ export const PostCard = ({
                         />
                         <Flex wrap="wrap" gap="10px">
                             {tags.map(tag => (
-                                <Tag variant="subtle">{tag}</Tag>
+                                <Tag key={tag} variant="subtle">
+                                    {tag}
+                                </Tag>
                             ))}
                         </Flex>
                         <Heading fontSize="26px" noOfLines={3}>{title}</Heading>
