@@ -49,5 +49,9 @@ router.post("/:postId/comments",
     [AuthMiddleware.authorized],
     PostController.createPostComment
 )
+router.post("/generate",
+    [AuthMiddleware.authorized],
+    PostController.generateRandomPost
+)
 
 export { router as PostRouter };
