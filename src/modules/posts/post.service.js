@@ -22,7 +22,9 @@ export class PostService {
         const data = await PostModel.find(
             {published: true},
             {content: 0}
-        ).populate('author', {profile: {fullname: 1, avatar: 1}});
+        )
+            .sort({createdAt: -1})
+            .populate('author', {profile: {fullname: 1, avatar: 1}});
 
         const posts = data.map(item => {
             let post = item._doc;
