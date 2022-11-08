@@ -3,42 +3,52 @@ import { $axios } from "../../utils/libs/axios";
 
 export class PostAPI {
     static async createPost(postData) {
-        return await $axios.post(`/posts/`, {...postData});
+        const { data } = await $axios.post(`/posts/`, {...postData});
+        return data;
     }
 
     static async getAllPosts() {
-        return await $axios.get(`/posts/`)
+        const { data } = await $axios.get(`/posts/`);
+        return data;
     }
 
     static async getPost(postId) {
-        return await $axios.get(`/posts/${postId}`)
+        const { data } = await $axios.get(`/posts/${postId}`);
+        return data;
     }
 
     static async updatePost(postId, postData) {
-        return await $axios.patch(`/posts/${postId}`, {...postData})
+        const { data } = await $axios.patch(`/posts/${postId}`, {...postData});
+        return data;
     }
 
     static async deletePost(postId) {
-        return await $axios.delete(`/posts/${postId}`)
+        const { data } = await $axios.delete(`/posts/${postId}`);
+        return data;
     }
 
     static async publicatePost(postId) {
-        return await $axios.post(`/posts/${postId}/publish`)
+        const { data } = await $axios.post(`/posts/${postId}/publish`);
+        return data;
     }
 
     static async likePost(postId) {
-        return await $axios.post(`/posts/${postId}/like`)
+        const { data } = await $axios.post(`/posts/${postId}/like`);
+        return data;
     }
 
     static async unlikePost(postId) {
-        return await $axios.post(`/posts/${postId}/unlike`)
+        const { data } = await $axios.post(`/posts/${postId}/unlike`);
+        return data;
     }
 
     static async getPostComments(postId) {
-        return await $axios.get(`/posts/${postId}/comments`)
+        const { data } = await $axios.get(`/posts/${postId}/comments`);
+        return data;
     }
 
     static async createPostComment(postId, commentData) {
-        return await $axios.post(`/posts/${postId}/comments`, {...commentData})
+        const { data } = await $axios.post(`/posts/${postId}/comments`, {...commentData});
+        return data;
     }
 }

@@ -3,14 +3,17 @@ import { $axios } from "../../utils/libs/axios";
 
 export class AuthAPI {
     static async login(login, password) {
-        return await $axios.post('/auth/login', {login, password})
+        const { data } = await $axios.post('/auth/login', {login, password});
+        return data;
     }
 
     static async logout() {
-        return await $axios.post('/auth/logout')
+        const { data } = await $axios.post('/auth/logout');
+        return data;
     }
 
     static async refresh() {
-        return await $axios.post('/auth/refresh')
+        const { data } = await $axios.post('/auth/refresh');
+        return data;
     }
 }
