@@ -26,7 +26,7 @@ export class AccountController {
 
     static async updateProfile(req, res, next) {
         try {
-            const { accountId } = req.token;
+            const { accountId } = req.params;
             const data = req.body;
 
             const profile = await AccountService.updateProfile(accountId, data);

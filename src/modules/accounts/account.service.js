@@ -63,13 +63,13 @@ export class AccountService {
     static async updateProfile(accountId, data) {
         AccountValidator.updateProfile(data);
 
-        const account = await AccountModel.findOneAndUpdate(
-            {accountId},
+        const account = await AccountModel.findByIdAndUpdate(
+            accountId,
             {profile: data},
             {new: true}
         );
         if (!account) {
-            throw AccountError.NotFound();
+            throw AccountError.AccountNotFound();
         }
 
         return account.profile
