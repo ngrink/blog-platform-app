@@ -12,4 +12,8 @@ export class PostError extends ApiError {
     static PostNotLikedByUser() {
         return ApiError.BadRequest("The post is not liked by this user")
     }
+
+    static LimitOptionInvalidValue() {
+        return ApiError.BadRequest("The maximum value of the 'limit' query parameter is 25")
+    }
 }

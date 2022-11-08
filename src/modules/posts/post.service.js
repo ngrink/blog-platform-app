@@ -18,15 +18,26 @@ export class PostService {
         return post
     }
 
-    static async getAllPosts(accountId, options) {
-        const data = await PostModel.find(
-            {published: true},
-            {content: 0}
-        )
-            .sort({createdAt: -1})
-            .populate('author', {profile: {fullname: 1, avatar: 1}});
+    static async getAllPosts(accountId, {page=1, limit=10}) {
+        if (limit > 25) {
+            throw PostError.LimitOptionInvalidValue();
+        }
 
-        const posts = data.map(item => {
+        const paginatedPosts = await PostModel.paginate(
+            {published: true},
+            {
+                "page": page,
+                "limit": limit,
+                "sort": {createdAt: -1},
+                "select": {content: 0},
+                "populate": {
+                    path: 'author',
+                    select: {profile: {fullname: 1, avatar: 1}}
+                },
+            }
+        );
+
+        paginatedPosts.docs = paginatedPosts.docs.map(item => {
             let post = item._doc;
             post.likes.isLikedByUser =  post.likes.items.includes(accountId);
             post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
@@ -36,7 +47,7 @@ export class PostService {
             return post
         })
 
-        return posts
+        return paginatedPosts
     }
 
     static async getPost(postId) {

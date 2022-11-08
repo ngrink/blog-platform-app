@@ -19,8 +19,9 @@ export class PostController {
     static async getAllPosts(req, res, next) {
         try {
             const { accountId } = req.token;
+            const { page, limit } = req.query;
 
-            const posts = await PostService.getAllPosts(accountId, {}); // #TODO: Add paginataion and filtering, views count
+            const posts = await PostService.getAllPosts(accountId, {page, limit}); // #TODO: Add filtering
             res.status(200).json(posts);
         } catch (e) {
             next(e);
