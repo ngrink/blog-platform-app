@@ -20,6 +20,8 @@ export const PostCard = ({
     likes,
     comments,
     views,
+    onLike,
+    onUnlike
 }) => {
     return (
         <Link to={`/posts/${slug}`}>
@@ -49,7 +51,10 @@ export const PostCard = ({
                 </Box>
                 <Box className={cl.footer}>
                     <Flex gap="10px" w="100%" align="center">
-                        <Button onClick={(e) => e.stopPropagation()}
+                        <Button onClick={likes.isLikedByUser
+                            ? (e) => {onUnlike(_id)}
+                            : (e) => {onLike(_id)}
+                        }
                             variant={likes.isLikedByUser ? "solid" : "outline"}
                             colorScheme={likes.isLikedByUser ? "blue" : "gray"}
                             leftIcon={likes.isLikedByUser

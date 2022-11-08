@@ -4,11 +4,15 @@ import { VStack } from '@chakra-ui/react';
 import { PostCard } from '../PostCard';
 
 
-export const PostCardList = ({ posts }) => {
+export const PostCardList = ({ posts, onLike, onUnlike }) => {
     return (
         <VStack gap="50px">
-            {posts.map(post => (
-                <PostCard key={post._id} {...post}/>
+            {posts && posts.map(post => (
+                <PostCard key={post._id}
+                    {...post}
+                    onLike={onLike}
+                    onUnlike={onUnlike}
+                />
             ))}
         </VStack>
     )
