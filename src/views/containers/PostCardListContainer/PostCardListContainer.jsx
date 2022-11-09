@@ -1,6 +1,6 @@
-import React from 'react'
-import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
-import { Spinner, useToast } from '@chakra-ui/react';
+import React, { useRef, useCallback } from 'react'
+import { useQueryClient, useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { VStack, Box, Spinner, useToast } from '@chakra-ui/react';
 
 import { PostAPI } from '../../../modules/posts';
 import { PostCardList } from '../../components/PostCardList';
@@ -10,12 +10,40 @@ import { connectionErrorToast } from '../../../utils/helpers';
 export const PostCardListContainer = () => {
     const queryClient = useQueryClient();
     const toast = useToast();
+    const scrollObserver = useRef();
 
-    const { isLoading, error, data: res } = useQuery(
-        ['posts'],
-        () => PostAPI.getAllPosts(),
-        {staleTime: 1000 * 60 * 10}
-    )
+    const { isFetching, isFetchingNextPage, error, data, hasNextPage, fetchNextPage } = useInfiniteQuery({
+        queryKey: ['posts'],
+        queryFn: ({ pageParam = {page: 1, limit: 10} }) => PostAPI.getAllPosts(pageParam),
+        getNextPageParam: (lastPage, pages) => (
+            lastPage.hasNextPage
+                ? {page: lastPage.nextPage, limit: lastPage.limit}
+                : undefined
+        )
+    })
+
+    const scrollRef = useCallback((node) => {
+        if (isFetching || error) {
+            return;
+        }
+
+        if (scrollObserver.current) {
+            scrollObserver.current.disconnect();
+        }
+        scrollObserver.current = new IntersectionObserver(
+            ([entry], observer) => {
+                if (entry.isIntersecting) {
+                    observer.unobserve(entry.target)
+                    if (hasNextPage) fetchNextPage();
+                }
+            },
+            { rootMargin: "0px 0px 3000px" }
+        )
+        if (node) {
+            scrollObserver.current.observe(node);
+        }
+    }, [isFetching, error, hasNextPage, fetchNextPage]);
+
 
     const likeMutation = useMutation({
         mutationFn: (postId) => PostAPI.likePost(postId),
@@ -23,8 +51,8 @@ export const PostCardListContainer = () => {
             await queryClient.cancelQueries({ queryKey: ['posts'] })
             const previousPosts = queryClient.getQueryData(['posts'])
 
-            queryClient.setQueryData(['posts'], posts => ({
-                ...posts, data: posts.data.map(post => {
+            queryClient.setQueryData(['posts'], (data) => ({
+                ...data, docs: data.docs.map(post => {
                     return post._id === postId
                         ? {
                             ...post,
@@ -52,8 +80,8 @@ export const PostCardListContainer = () => {
             await queryClient.cancelQueries({ queryKey: ['posts'] })
             const previousPosts = queryClient.getQueryData(['posts'])
 
-            queryClient.setQueryData(['posts'], posts => ({
-                ...posts, data: posts.data.map(post => {
+            queryClient.setQueryData(['posts'], (data) => ({
+                ...data, docs: data.docs.map(post => {
                     return post._id === postId
                         ? {
                             ...post,
@@ -75,7 +103,7 @@ export const PostCardListContainer = () => {
           },
     })
 
-    if (isLoading) {
+    if (isFetching && !isFetchingNextPage) {
         return (
             <Spinner
                 thickness='4px'
@@ -92,10 +120,19 @@ export const PostCardListContainer = () => {
     }
 
     return (
-        <PostCardList
-            posts={res.data}
-            onLike={(postId) => likeMutation.mutate(postId)}
-            onUnlike={(postId) => unlikeMutation.mutate(postId)}
-        />
+        <VStack as="ul" gap="50px" listStyleType="none">
+            {data.pages.map(
+                (page) => (
+                    <Box as="li" key={page.page}>
+                        <PostCardList
+                            posts={page.docs}
+                            onLike={(postId) => likeMutation.mutate(postId)}
+                            onUnlike={(postId) => unlikeMutation.mutate(postId)}
+                        />
+                        <div ref={scrollRef}></div>
+                    </Box>
+                )
+            )}
+        </VStack>
     )
 }

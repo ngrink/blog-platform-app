@@ -7,8 +7,11 @@ export class PostAPI {
         return data;
     }
 
-    static async getAllPosts() {
-        const { data } = await $axios.get(`/posts/`);
+    static async getAllPosts({ page, limit }) {
+        const { data } = await $axios.get(`/posts`, {
+            params: { page, limit }
+        });
+
         return data;
     }
 
