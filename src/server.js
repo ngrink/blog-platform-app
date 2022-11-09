@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import * as dotenv from 'dotenv';
 
 import { router } from "./server.router";
@@ -16,6 +17,10 @@ app.use(morgan("dev"))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true
+}));
 app.use("/api/", router);
 app.use(errorHandler)
 

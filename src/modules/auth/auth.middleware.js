@@ -9,14 +9,37 @@ export class AuthMiddleware {
             if (!accessToken) {
                 next(AuthError.Unauthorized());
             }
+
             const validToken = await AuthTokenService.verifyAccessToken(accessToken);
             if (!validToken) {
                 next(AuthError.Unauthorized());
             }
+
             req.token = validToken;
             next();
         } catch (e) {
-            next(AuthError.Unauthorized())
+            next(AuthError.Unauthorized());
+        }
+    }
+
+    static async optionalAuthorized(req, res, next) {
+        try {
+            const { accessToken } = req.cookies;
+            if (!accessToken) {
+                req.token = {};
+                return next();
+            }
+
+            const validToken = await AuthTokenService.verifyAccessToken(accessToken);
+            if (!validToken) {
+                next(AuthError.Unauthorized());
+            }
+
+            req.token = validToken;
+            next();
+        } catch (e) {
+            req.token = {};
+            next();
         }
     }
 }

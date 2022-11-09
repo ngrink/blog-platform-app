@@ -1,13 +1,13 @@
 import { ApiError } from '../../api.exceptions';
-import { ProfileService } from './profile.service';
 
 
-export class ProfileMiddleware {
-    static async profileOwner(req, res, next) {
+export class AccountMiddleware {
+    static async accountOwner(req, res, next) {
         try {
             const { accountId } = req.token;
+            const { accountId: id } = req.params;
 
-            (accountId === req.params.accountId)
+            (accountId === id)
                 ? next()
                 : next(ApiError.Forbidden())
         } catch (e) {

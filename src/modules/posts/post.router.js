@@ -11,9 +11,11 @@ router.post("/",
     PostController.createPost
 )
 router.get("/",
+    [AuthMiddleware.optionalAuthorized],
     PostController.getAllPosts
 )
 router.get("/:postId",
+    [AuthMiddleware.optionalAuthorized],
     PostController.getPost
 )
 router.patch("/:postId",
@@ -40,12 +42,16 @@ router.post("/:postId/unlike",
     PostController.unlikePost
 )
 router.get("/:postId/comments",
-    [AuthMiddleware.authorized],
+    [AuthMiddleware.optionalAuthorized],
     PostController.getPostComments
 )
 router.post("/:postId/comments",
     [AuthMiddleware.authorized],
     PostController.createPostComment
+)
+router.post("/generate",
+    [AuthMiddleware.authorized],
+    PostController.generateRandomPost
 )
 
 export { router as PostRouter };
