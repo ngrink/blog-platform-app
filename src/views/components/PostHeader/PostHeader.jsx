@@ -11,6 +11,7 @@ export const PostHeader = ({ author, createdAt }) => {
             <UserAvatar
                 src={author.profile.avatar}
                 name={author.profile.fullname}
+                username={author.username}
                 subtitle={moment(createdAt).fromNow()}
                 />
         </Box>

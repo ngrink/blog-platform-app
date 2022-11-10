@@ -1,11 +1,11 @@
 import React from 'react'
-import { HStack, Avatar as AvatarChakra } from '@chakra-ui/react';
+import { HStack, Avatar as AvatarChakra, Flex, Box } from '@chakra-ui/react';
 
 import cl from "./UserAvatar.module.scss";
 
 
 
-export const UserAvatar = ({ src, name, subtitle }) => {
+export const UserAvatar = ({ src, name, subtitle, username }) => {
   return (
     <div className={cl.avatarContainer} >
         <HStack gap="5px">
@@ -16,6 +16,7 @@ export const UserAvatar = ({ src, name, subtitle }) => {
             />
             <AvatarDetails
                 name={name}
+                username={username}
                 subtitle={subtitle}
             />
         </HStack>
@@ -23,21 +24,30 @@ export const UserAvatar = ({ src, name, subtitle }) => {
   )
 }
 
-export const AvatarDetails = ({ name, subtitle }) => {
+export const AvatarDetails = ({ name, subtitle, username }) => {
     if (!name && !subtitle) return null;
 
     return (
         <div>
-            {name &&
-                <div className={cl.name}>
-                    {name}
-                </div>
-            }
-            {subtitle &&
-                <div className={cl.subtitle}>
-                    {subtitle}
-                </div>
-            }
+            <HStack gap="0px" alignItems="center" pb="5px">
+                {name &&
+                    <div className={cl.name}>
+                        {name}
+                    </div>
+                }
+                {username &&
+                    <Box className={cl.username} mb="-2px">
+                        @{username}
+                    </Box>
+                }
+            </HStack>
+            <Box>
+                {subtitle &&
+                    <div className={cl.subtitle}>
+                        {subtitle}
+                    </div>
+                }
+            </Box>
         </div>
     )
 }
