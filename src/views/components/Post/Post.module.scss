@@ -1,0 +1,25 @@
+.card {
+    width: 100%;
+    max-width: 1000px;
+    min-height: calc(100vh - 60px);
+    margin: 0 auto;
+    padding-top: 24px;
+    overflow: hidden;
+
+    background-color: #fff;
+    color: #333;
+    box-shadow: -10px 5px 15px 0px rgba(0, 0, 0, 0.05);
+}
+
+.cardContainer {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.markdownContainer * {
+    all: revert
+}
