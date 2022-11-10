@@ -39,6 +39,7 @@ export class PostService {
 
         paginatedPosts.docs = paginatedPosts.docs.map(item => {
             let post = item._doc;
+            post.isPostOwnedByUser = post.author._id == accountId
             post.likes.isLikedByUser =  post.likes.items.includes(accountId);
             post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
             delete post.likes.items;
