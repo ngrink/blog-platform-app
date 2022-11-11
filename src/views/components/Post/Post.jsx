@@ -1,14 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { Box, Flex, Heading, Spacer, Text, VStack } from '@chakra-ui/react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm'
-import remarkToc from 'remark-toc';
+import Output from 'editorjs-react-renderer';
 
 import { PostHeader } from '../PostHeader';
 import { PostTags } from '../PostTags';
 import { PostPreview } from '../PostPreview';
 import { PostFooter } from '../PostFooter';
+import { styles } from '../../../utils/libs/editorjs/editorjs.config';
 import cl from "./Post.module.scss";
 
 
@@ -54,8 +53,8 @@ export const Post = ({
                 />
             }
             <Box className={cl.cardContainer} py="24px">
-                <Box className={cl.markdownContainer}>
-                    <ReactMarkdown remarkPlugins={[remarkToc, remarkGfm]}>{content}</ReactMarkdown>
+                <Box className={cl.renderContainer}>
+                    <Output data={content} style={styles} />
                 </Box>
             </Box>
             <Spacer />
