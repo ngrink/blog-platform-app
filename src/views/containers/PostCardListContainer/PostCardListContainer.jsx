@@ -1,5 +1,5 @@
-import React, { useRef, useCallback } from 'react'
-import { useQueryClient, useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import React, { useRef, useCallback, useMemo, useState } from 'react'
+import { useQueryClient, useInfiniteQuery, useMutation, QueryObserver } from '@tanstack/react-query';
 import { VStack, Box, Spinner, useToast } from '@chakra-ui/react';
 
 import { PostAPI } from '../../../modules/posts';
@@ -11,6 +11,7 @@ export const PostCardListContainer = () => {
     const queryClient = useQueryClient();
     const toast = useToast();
     const scrollObserver = useRef();
+    const [deletedPosts, setDeletedPosts] = useState(new Set());
 
     const { isFetching, isFetchingNextPage, error, data, hasNextPage, fetchNextPage } = useInfiniteQuery({
         queryKey: ['posts'],
@@ -103,6 +104,19 @@ export const PostCardListContainer = () => {
           },
     })
 
+    const observer = useMemo(() => {
+        return new QueryObserver(queryClient, {
+            queryKey: ['posts', {deleted: true}],
+            retry: 0,
+            initialData: new Set(),
+        })
+    }, [queryClient])
+
+    observer.subscribe(({data}) => {
+        console.log(data);
+        if (data) setDeletedPosts(data);
+    })
+
     if (isFetching && !isFetchingNextPage) {
         return (
             <Spinner
@@ -126,6 +140,7 @@ export const PostCardListContainer = () => {
                     <Box as="li" key={page.page}>
                         <PostCardList
                             posts={page.docs}
+                            deletedPosts={deletedPosts}
                             onLike={(postId) => likeMutation.mutate(postId)}
                             onUnlike={(postId) => unlikeMutation.mutate(postId)}
                         />
