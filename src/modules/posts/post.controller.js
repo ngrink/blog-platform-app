@@ -30,9 +30,10 @@ export class PostController {
 
     static async getPost(req, res, next) {
         try {
+            const { accountId } = req.token;
             const { postId } = req.params;
 
-            const post = await PostService.getPost(postId);
+            const post = await PostService.getPost(accountId, postId);
             res.status(200).json(post);
         } catch (e) {
             next(e);

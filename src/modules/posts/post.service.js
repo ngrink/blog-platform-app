@@ -32,34 +32,37 @@ export class PostService {
                 "select": {content: 0},
                 "populate": {
                     path: 'author',
-                    select: {profile: {fullname: 1, avatar: 1}}
+                    select: {
+                        username: 1,
+                        profile: {fullname: 1, avatar: 1}
+                    }
                 },
             }
         );
 
-        paginatedPosts.docs = paginatedPosts.docs.map(item => {
-            let post = item._doc;
-            post.isPostOwnedByUser = post.author._id == accountId
-            post.likes.isLikedByUser =  post.likes.items.includes(accountId);
-            post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
-            delete post.likes.items;
-            delete post.comments.items;
-
-            return post
+        paginatedPosts.docs = paginatedPosts.docs.map(post => {
+            const postData = PostService._computePostFields(accountId, post._doc)
+            return postData
         })
 
         return paginatedPosts
     }
 
-    static async getPost(postId) {
-        const post = await PostModel.findById(postId, {comments: 0});
+    static async getPost(accountId, postId) {
+        const post = await PostModel.findById(postId)
+            .populate("author", {
+                username: 1,
+                profile: {fullname: 1, avatar: 1, username: 1}
+            });
+
         if (!post) {
             throw PostError.PostNotFound();
         }
-
         post.views += 1;
         post.save();
-        return post
+
+        const postData = PostService._computePostFields(accountId, post._doc);
+        return postData
     }
 
     static async updatePost(postId, data) {
@@ -134,5 +137,15 @@ export class PostService {
             postId,
             author: accountId
         })
+    }
+
+    static _computePostFields(accountId, post) {
+        post.isPostOwnedByUser = post.author._id == accountId
+        post.likes.isLikedByUser =  post.likes.items.includes(accountId);
+        post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
+        delete post.likes.items;
+        delete post.comments.items;
+
+        return post;
     }
 }
