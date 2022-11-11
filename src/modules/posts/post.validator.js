@@ -9,7 +9,7 @@ export class PostValidator {
                 .required(),
             author: Joi.string()
                 .required(),
-            content: Joi.string()
+            content: Joi.object()
                 .required(),
             slug: Joi.string()
                 .pattern(new RegExp(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)),
@@ -26,7 +26,7 @@ export class PostValidator {
     static updatePost(data) {
         const validation = Joi.object({
             title: Joi.string(),
-            content: Joi.string(),
+            content: Joi.object(),
             tags: Joi.array(),
             description: Joi.string(),
             preview: Joi.string()
