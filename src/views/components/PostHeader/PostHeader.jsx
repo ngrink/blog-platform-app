@@ -3,7 +3,7 @@ import { Box, Flex, Spacer } from '@chakra-ui/react';
 import moment from 'moment';
 
 import { UserAvatar } from '../UserAvatar';
-import { PostMenu } from '../PostMenu';
+import { PostMenuContainer } from '../../containers/PostMenuContainer';
 
 
 export const PostHeader = ({ postId, author, createdAt, isPostOwnedByUser }) => {
@@ -16,7 +16,7 @@ export const PostHeader = ({ postId, author, createdAt, isPostOwnedByUser }) => 
                 subtitle={moment(createdAt).fromNow()}
                 />
             <Spacer />
-            <PostMenu
+            <PostMenuContainer
                 postId={postId}
                 isPostOwnedByUser={isPostOwnedByUser}
             />

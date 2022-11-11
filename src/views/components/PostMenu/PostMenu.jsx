@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 
-export const PostMenu = ({ postId, isPostOwnedByUser }) => {
+export const PostMenu = ({
+    postId,
+    isPostOwnedByUser,
+    onDeletePost
+}) => {
     return (
         <Box>
             <Menu>
@@ -22,7 +26,10 @@ export const PostMenu = ({ postId, isPostOwnedByUser }) => {
                                     Редактировать статью
                                 </MenuItem>
                             </Link>
-                            <MenuItem icon={<FontAwesomeIcon icon="fa-solid fa-trash" />} color="#cb3434">
+                            <MenuItem
+                                icon={<FontAwesomeIcon icon="fa-solid fa-trash" />} color="#cb3434"
+                                onClick={onDeletePost}
+                            >
                                 Удалить статью
                             </MenuItem>
                         </>
