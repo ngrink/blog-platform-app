@@ -129,7 +129,7 @@ export class PostService {
         }
     }
 
-    static async checkPostOwner(postId, accountId) {
+    static async _checkPostOwner(postId, accountId) {
         return await PostModel.exists({
             postId,
             author: accountId
