@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 
 import { MainLayout } from './views/layouts/MainLayout';
 import { HomeScreen } from './views/screens/HomeScreen';
+import { PostScreen } from './views/screens/PostScreen';
+import { PostEditScreen } from './views/screens/PostEditScreen';
 import './assets/css/App.css';
 
 
@@ -20,7 +22,8 @@ export const App = () => {
             <Route path="/authors/:authorId" element={<h1>AuthorPage</h1>} />
             <Route path="/posts/popular" element={<h1>PopularPostsPage</h1>} />
             <Route path="/posts/new" element={<h1>NewestPostsPage</h1>} />
-            <Route path="/posts/:postId" element={<h1>PostPage</h1>} />
+            <Route path="/posts/:postId" element={<PostScreen />} />
+            <Route path="/posts/:postId/edit" element={<PostEditScreen />} />
             <Route path="*" element={<h1>404 Not found</h1>} />
         </Route>
       </Routes>
