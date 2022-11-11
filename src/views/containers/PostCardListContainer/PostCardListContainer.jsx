@@ -4,7 +4,7 @@ import { VStack, Box, Spinner, useToast } from '@chakra-ui/react';
 
 import { PostAPI } from '../../../modules/posts';
 import { PostCardList } from '../../components/PostCardList';
-import { connectionErrorToast } from '../../../utils/helpers';
+import { error } from '../../../utils/helpers/toasts';
 
 
 export const PostCardListContainer = () => {
@@ -70,7 +70,7 @@ export const PostCardListContainer = () => {
           },
           onError: (err, postId, context) => {
             queryClient.setQueryData(['posts'], context.previousPosts);
-            connectionErrorToast(toast);
+            toast(error());
           },
     })
 
@@ -99,7 +99,7 @@ export const PostCardListContainer = () => {
           },
           onError: (err, postId, context) => {
             queryClient.setQueryData(['posts'], context.previousPosts);
-            connectionErrorToast(toast);
+            toast(error());
           },
     })
 
