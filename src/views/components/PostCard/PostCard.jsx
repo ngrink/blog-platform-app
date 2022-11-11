@@ -38,7 +38,7 @@ export const PostCard = ({
                     tags={tags}
                 />
             </VStack>
-            <Link to={`/posts/${slug}`}>
+            <Link to={`/posts/${postId}`}>
                 <Box className={cl.cardContainer} py="16px">
                     <VStack gap="12px" alignItems="flex-start">
                         <Heading fontSize="26px" noOfLines={3}>{title}</Heading>
