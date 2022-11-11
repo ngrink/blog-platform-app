@@ -21,6 +21,7 @@ export const PostCard = ({
     likes,
     comments,
     views,
+    isPostOwnedByUser,
     onLike,
     onUnlike
 }) => {
@@ -28,8 +29,10 @@ export const PostCard = ({
         <Box className={cl.card}>
             <VStack className={cl.cardContainer} gap="16px" alignItems="flex-start">
                 <PostHeader
+                    postId={postId}
                     author={author}
                     createdAt={createdAt}
+                    isPostOwnedByUser={isPostOwnedByUser}
                 />
                 <PostTags
                     tags={tags}

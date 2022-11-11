@@ -25,6 +25,7 @@ export const Post = ({
     likes,
     comments,
     views,
+    isPostOwnedByUser,
     onLike,
     onUnlike
 }) => {
@@ -32,8 +33,10 @@ export const Post = ({
         <Flex className={cl.card} flexDirection="column">
             <VStack className={cl.cardContainer} gap="16px" alignItems="flex-start">
                 <PostHeader
+                    postId={postId}
                     author={author}
                     createdAt={createdAt}
+                    isPostOwnedByUser={isPostOwnedByUser}
                 />
                 <PostTags
                     tags={tags}

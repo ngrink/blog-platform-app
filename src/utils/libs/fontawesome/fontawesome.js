@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBars, faEye, faMessage, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faEye, faMessage, faHeart, faEllipsisVertical, faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faMessage as faMessageRegular ,  faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 
@@ -9,5 +9,8 @@ library.add(
     faMessage,
     faMessageRegular,
     faHeart,
-    faHeartRegular
+    faHeartRegular,
+    faEllipsisVertical,
+    faPenToSquare,
+    faTrash
 )
