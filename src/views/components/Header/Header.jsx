@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { HStack, Icon } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { CreatePostButtonContainer } from '../../containers/CreatePostButtonContainer';
 import { Logo } from '../Logo';
 import cl from "./Header.module.scss";
-
 
 
 export const Header = () => {
@@ -22,8 +22,8 @@ export const Header = () => {
                 </Link>
             </HStack>
             <HStack>
-            {/* <SearchBar /> */}
-            {/* <CreateBtn /> */}
+                {/* <SearchBar /> */}
+                <CreatePostButtonContainer />
             </HStack>
             {/* <Profile /> */}
         </div>
