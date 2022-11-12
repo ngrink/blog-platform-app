@@ -10,7 +10,7 @@ export const PostCardList = ({ posts, deletedPosts, onLike, onUnlike }) => {
             {posts && posts
                 .filter(post => !deletedPosts.has(post._id))
                 .map(post => (
-                    <li key={post._id}>
+                    <li key={post._id} style={{width: "100%"}}>
                         <PostCard
                             {...post}
                             deletedPosts={deletedPosts}
