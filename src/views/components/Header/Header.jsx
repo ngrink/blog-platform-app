@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { HStack, Icon } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -16,7 +17,9 @@ export const Header = () => {
                     onClick={() => console.log(`Hamburger clicked`)}
                     aria-label="Открыть меню"
                 />
-                <Logo />
+                <Link to="/">
+                    <Logo />
+                </Link>
             </HStack>
             <HStack>
             {/* <SearchBar /> */}
