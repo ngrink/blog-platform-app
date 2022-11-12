@@ -1,20 +1,18 @@
-import React, { useCallback, useMemo, useRef } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
 import { Spinner, useToast } from '@chakra-ui/react';
-import { createReactEditorJS } from 'react-editor-js';
 
-import { PostAPI } from '../../../modules/posts';
 import { PostEdit } from '../../components/PostEdit';
-
-import { EDITOR_JS_TOOLS } from '../../../utils/libs/editorjs';
+import { PostAPI } from '../../../modules/posts';
+import { useEditor } from '../../../utils/hooks/useEditor';
 import { toastInfo, toastError, toastSuccess } from '../../../utils/helpers/toasts';
 
 
 export const PostEditContainer = () => {
+    const { postId } = useParams();
     const queryClient = useQueryClient();
     const toast = useToast();
-    const { postId } = useParams();
 
     const { isLoading, error, data } = useQuery(
         ['posts', postId],
@@ -59,25 +57,11 @@ export const PostEditContainer = () => {
           }
     })
 
-    const editorInstance = useRef(null);
-
-    const ReactEditorJS = useMemo(() => {
-        return createReactEditorJS()
-    }, [])
-
-    const handleInitialize = useCallback((instance) => {
-        editorInstance.current = instance
-    }, [])
-
-    const handleData = useCallback(async () => {
-        const data = await editorInstance.current.save();
-        return data;
-    }, [])
-
+    const editor = useEditor(data?.content);
 
     const onSubmit = async (data) => {
-        const content = await handleData();
-        updatePost.mutate({postId, data: {content, ...data}});
+        const content = await editor.getData();
+        updatePost.mutate({postId, data: {...data, content}});
     }
 
     if (isLoading) {
@@ -99,13 +83,7 @@ export const PostEditContainer = () => {
     return (
         <PostEdit
             {...data}
-            editor={
-                <ReactEditorJS
-                    onInitialize={handleInitialize}
-                    tools={EDITOR_JS_TOOLS}
-                    defaultValue={data.content}
-                />
-            }
+            editor={editor.element}
             status={updatePost.status}
             submitButton={{title: "Обновить пост", loadingText: "Обновление..."}}
             onSubmit={onSubmit}
