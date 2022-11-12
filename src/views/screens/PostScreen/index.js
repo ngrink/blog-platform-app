@@ -1,1 +1,1 @@
-export { PostScreen } from "./PostScreen";
+export { PostScreen as default } from "./PostScreen";
