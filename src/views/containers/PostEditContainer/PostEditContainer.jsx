@@ -43,18 +43,18 @@ export const PostEditContainer = () => {
                 preview: data.preiew,
             }))
 
-            toast(toastInfo({title: "Сохранение поста..."}));
+            toast(toastInfo({title: "Обновление поста..."}));
 
             return { previousData }
           },
           onError: (err, {postId}, context) => {
             queryClient.setQueryData(['posts', postId], context.previousData);
-            toast(toastError({title: "Пост не сохранен"}));
+            toast(toastError({title: "Пост не обновлен"}));
           },
           onSuccess: () => {
             toast.closeAll();
             setTimeout(() => {
-                toast(toastSuccess({title: "Пост сохранен", duration: 1000}));
+                toast(toastSuccess({title: "Пост обновлен", duration: 1000}));
             }, 500);
           }
     })
@@ -107,6 +107,7 @@ export const PostEditContainer = () => {
                 />
             }
             status={updatePost.status}
+            submitButton={{title: "Обновить пост", loadingText: "Обновление..."}}
             onSubmit={onSubmit}
         />
     )

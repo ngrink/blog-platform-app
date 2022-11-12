@@ -11,6 +11,7 @@ export const PostEdit = ({
     preview: initialPreview,
     editor,
     status,
+    submitButton,
     onSubmit
 }) => {
     const [title, setTitle] = useState(initialTitle);
@@ -45,11 +46,11 @@ export const PostEdit = ({
                 <Box className={cl.cardContainer}>
                     <Button
                         isLoading={status === "loading"}
-                        loadingText='Сохранение'
+                        loadingText={submitButton.loadingText}
                         spinnerPlacement="end"
                         onClick={onSubmitHandler}
                     >
-                        Сохранить пост
+                        {submitButton.title}
                     </Button>
                 </Box>
             </Box>
