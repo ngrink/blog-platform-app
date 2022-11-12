@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 
@@ -10,6 +11,7 @@ import { toastError, toastInfo, toastSuccess } from '../../../utils/helpers/toas
 
 
 export const PostCreateContainer = () => {
+    const navigate = useNavigate()
     const editor = useEditor();
     const toast = useToast();
 
@@ -20,10 +22,11 @@ export const PostCreateContainer = () => {
         onError: () => {
             toast(toastError({title: "Пост не создан"}));
         },
-        onSuccess: () => {
+        onSuccess: (post) => {
             toast.closeAll();
             setTimeout(() => {
                 toast(toastSuccess({title: "Пост создан", duration: 1000}));
+                navigate(`/posts/${post._id}`);
             }, 500);
         },
     });
