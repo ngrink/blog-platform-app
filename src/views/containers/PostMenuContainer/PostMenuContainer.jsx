@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useToast } from '@chakra-ui/react'
 
@@ -8,6 +9,8 @@ import { toastError, toastInfo, toastSuccess } from '../../../utils/helpers/toas
 
 
 export const PostMenuContainer = ({ postId, isPostOwnedByUser }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const toast = useToast();
 
@@ -39,6 +42,7 @@ export const PostMenuContainer = ({ postId, isPostOwnedByUser }) => {
             toast.closeAll();
             setTimeout(() => {
                 toast(toastSuccess({title: "Пост удален", duration: 1000}));
+                if (location.pathname !== "/") navigate(-1);
             }, 500);
           }
     })
