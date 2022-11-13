@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 export const PostMenu = ({
     postId,
     isPostOwnedByUser,
-    onDeletePost
+    isPublished,
+    onDeletePost,
+    onPublishPost
 }) => {
     return (
         <Box>
@@ -21,16 +23,24 @@ export const PostMenu = ({
                 <MenuList>
                     {isPostOwnedByUser &&
                         <>
+                            {!isPublished &&
+                                <MenuItem
+                                    icon={<FontAwesomeIcon icon="fa-solid fa-paper-plane" />}
+                                    onClick={onPublishPost}
+                                >
+                                    Опубликовать
+                                </MenuItem>
+                            }
                             <Link to={`/posts/${postId}/edit`}>
                                 <MenuItem icon={<FontAwesomeIcon icon="fa-solid fa-pen-to-square" />}>
-                                    Редактировать статью
+                                    Редактировать
                                 </MenuItem>
                             </Link>
                             <MenuItem
                                 icon={<FontAwesomeIcon icon="fa-solid fa-trash" />} color="#cb3434"
                                 onClick={onDeletePost}
                             >
-                                Удалить статью
+                                Удалить
                             </MenuItem>
                         </>
                     }

@@ -30,7 +30,7 @@ export class PostAPI {
         return data;
     }
 
-    static async publicatePost(postId) {
+    static async publishPost(postId) {
         const { data } = await $axios.post(`/posts/${postId}/publish`);
         return data;
     }

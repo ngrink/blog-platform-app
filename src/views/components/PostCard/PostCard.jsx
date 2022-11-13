@@ -22,6 +22,7 @@ export const PostCard = ({
     comments,
     views,
     isPostOwnedByUser,
+    isPublished,
     onLike,
     onUnlike
 }) => {
@@ -33,6 +34,7 @@ export const PostCard = ({
                     author={author}
                     createdAt={createdAt}
                     isPostOwnedByUser={isPostOwnedByUser}
+                    isPublished={isPublished}
                 />
                 <PostTags
                     tags={tags}

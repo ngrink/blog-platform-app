@@ -25,6 +25,7 @@ export const Post = ({
     comments,
     views,
     isPostOwnedByUser,
+    isPublished,
     onLike,
     onUnlike
 }) => {
@@ -36,6 +37,7 @@ export const Post = ({
                     author={author}
                     createdAt={createdAt}
                     isPostOwnedByUser={isPostOwnedByUser}
+                    isPublished={isPublished}
                 />
                 <PostTags
                     tags={tags}

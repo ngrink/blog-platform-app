@@ -6,7 +6,13 @@ import { UserAvatar } from '../UserAvatar';
 import { PostMenuContainer } from '../../containers/PostMenuContainer';
 
 
-export const PostHeader = ({ postId, author, createdAt, isPostOwnedByUser }) => {
+export const PostHeader = ({
+    postId,
+    author,
+    createdAt,
+    isPostOwnedByUser,
+    isPublished
+}) => {
     return (
         <Flex w="100%">
             <UserAvatar
@@ -19,6 +25,7 @@ export const PostHeader = ({ postId, author, createdAt, isPostOwnedByUser }) => 
             <PostMenuContainer
                 postId={postId}
                 isPostOwnedByUser={isPostOwnedByUser}
+                isPublished={isPublished}
             />
         </Flex>
     )

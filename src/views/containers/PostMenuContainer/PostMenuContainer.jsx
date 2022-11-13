@@ -8,7 +8,7 @@ import { PostMenu } from '../../components/PostMenu/PostMenu'
 import { toastError, toastInfo, toastSuccess } from '../../../utils/helpers/toasts'
 
 
-export const PostMenuContainer = ({ postId, isPostOwnedByUser }) => {
+export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -47,15 +47,36 @@ export const PostMenuContainer = ({ postId, isPostOwnedByUser }) => {
           }
     })
 
+    const publishPost = useMutation((postId) => PostAPI.publishPost(postId), {
+        onMutate: () => {
+            toast(toastInfo({title: "Публикация поста..."}));
+          },
+        onError: () => {
+            toast(toastError({title: "Пост не опубликован"}));
+        },
+        onSuccess: () => {
+            toast.closeAll();
+            setTimeout(() => {
+                toast(toastSuccess({title: "Опубликовано", duration: 1000}));
+            }, 500);
+        }
+    })
+
     const onDeletePost = useCallback(() => {
         deletePost.mutate(postId);
     }, [deletePost, postId])
+
+    const onPublishPost = useCallback(() => {
+        publishPost.mutate(postId);
+    }, [publishPost, postId])
 
     return (
         <PostMenu
             postId={postId}
             isPostOwnedByUser={isPostOwnedByUser}
+            isPublished={isPublished}
             onDeletePost={onDeletePost}
+            onPublishPost={onPublishPost}
         />
     )
 }
