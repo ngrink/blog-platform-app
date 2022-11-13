@@ -1,6 +1,22 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBars, faEye, faMessage, faHeart, faEllipsisVertical, faPenToSquare, faTrash, faPlus, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { faMessage as faMessageRegular ,  faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import {
+    faBars,
+    faEye,
+    faMessage,
+    faHeart,
+    faEllipsisVertical,
+    faPenToSquare,
+    faTrash,
+    faPlus,
+    faPaperPlane,
+    faFireFlameCurved,
+    faClock,
+    faBookmark
+} from "@fortawesome/free-solid-svg-icons";
+import {
+    faMessage as faMessageRegular ,
+    faHeart as faHeartRegular
+} from '@fortawesome/free-regular-svg-icons';
 
 
 library.add(
@@ -14,5 +30,9 @@ library.add(
     faPenToSquare,
     faTrash,
     faPlus,
-    faPaperPlane
+    faPaperPlane,
+    faFireFlameCurved,
+    faClock,
+    faBookmark,
+    faPenToSquare
 )
