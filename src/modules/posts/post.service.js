@@ -24,7 +24,7 @@ export class PostService {
         }
 
         const paginatedPosts = await PostModel.paginate(
-            {published: true},
+            {isPublished: true},
             {
                 "page": page,
                 "limit": limit,
@@ -77,7 +77,7 @@ export class PostService {
     }
 
     static async publicatePost(postId) {
-        const updated = await PostModel.findByIdAndUpdate(postId, {published: true});
+        const updated = await PostModel.findByIdAndUpdate(postId, {isPublished: true});
         if (!updated) {
             throw PostError.PostNotFound()
         }

@@ -40,7 +40,7 @@ const PostSchema = new Schema({
         type: Number,
         default: 0
     },
-    published: {
+    isPublished: {
         type: Boolean,
         default: false
     },
