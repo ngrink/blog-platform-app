@@ -46,6 +46,7 @@ const PostSchema = new Schema({
     },
     description: String,
     preview: String,
+    publishedAt: Date,
 }, {
     timestamps: true
 })

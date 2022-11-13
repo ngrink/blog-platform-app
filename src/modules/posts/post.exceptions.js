@@ -5,6 +5,10 @@ export class PostError extends ApiError {
         return ApiError.NotFound("Post with that id not found")
     }
 
+    static PostAlreadyPublished() {
+        return ApiError.BadRequest("The post has already been published")
+    }
+
     static PostAlreadyLikedByUser() {
         return ApiError.BadRequest("The post has already been liked by this user")
     }

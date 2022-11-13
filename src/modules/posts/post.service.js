@@ -77,10 +77,17 @@ export class PostService {
     }
 
     static async publicatePost(postId) {
-        const updated = await PostModel.findByIdAndUpdate(postId, {isPublished: true});
-        if (!updated) {
+        const post = await PostModel.findById(postId, {isPublished: 1});
+        if (!post) {
             throw PostError.PostNotFound()
         }
+        if (post.isPublished) {
+            throw PostError.PostAlreadyPublished()
+        }
+
+        post.isPublished = true;
+        post.publishedAt = new Date();
+        post.save();
     }
 
     static async likePost(accountId, postId) {
