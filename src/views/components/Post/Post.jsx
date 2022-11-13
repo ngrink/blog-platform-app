@@ -18,7 +18,7 @@ export const Post = ({
     content,
     slug,
     author,
-    createdAt,
+    publishedAt,
     preview,
     tags,
     likes,
@@ -35,7 +35,7 @@ export const Post = ({
                 <PostHeader
                     postId={postId}
                     author={author}
-                    createdAt={createdAt}
+                    publishedAt={publishedAt}
                     isPostOwnedByUser={isPostOwnedByUser}
                     isPublished={isPublished}
                 />

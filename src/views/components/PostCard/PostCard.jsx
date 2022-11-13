@@ -15,7 +15,7 @@ export const PostCard = ({
     description,
     slug,
     author,
-    createdAt,
+    publishedAt,
     preview,
     tags,
     likes,
@@ -32,7 +32,7 @@ export const PostCard = ({
                 <PostHeader
                     postId={postId}
                     author={author}
-                    createdAt={createdAt}
+                    publishedAt={publishedAt}
                     isPostOwnedByUser={isPostOwnedByUser}
                     isPublished={isPublished}
                 />

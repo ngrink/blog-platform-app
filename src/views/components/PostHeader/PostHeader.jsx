@@ -9,7 +9,7 @@ import { PostMenuContainer } from '../../containers/PostMenuContainer';
 export const PostHeader = ({
     postId,
     author,
-    createdAt,
+    publishedAt,
     isPostOwnedByUser,
     isPublished
 }) => {
@@ -19,7 +19,7 @@ export const PostHeader = ({
                 src={author.profile.avatar}
                 name={author.profile.fullname}
                 username={author.username}
-                subtitle={moment(createdAt).fromNow()}
+                subtitle={isPublished ? moment(publishedAt).fromNow() : `Черновик`}
                 />
             <Spacer />
             <PostMenuContainer
