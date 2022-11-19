@@ -1,7 +1,7 @@
-import React, { useRef, useCallback } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom';
-import { useQueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { VStack, Box, Spinner, useToast } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { Spinner } from '@chakra-ui/react';
 
 import { PostAPI } from '../../../modules/posts';
 import { Post } from '../../components/Post';
