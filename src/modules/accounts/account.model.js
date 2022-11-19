@@ -23,6 +23,10 @@ const AccountSchema = new Schema({
         count: { type: Number, default: 0 },
         items: { type: [String], default: [] },
     },
+    follows: {
+        count: { type: Number, default: 0 },
+        items: { type: [String], default: [] },
+    }
 }, {
     timestamps: true
 })

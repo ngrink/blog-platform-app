@@ -74,4 +74,42 @@ export class AccountService {
 
         return account.profile
     }
+
+    static async followUser(accountId, userId) {
+        const account = await AccountModel.findById(accountId, {follows: 1})
+        const user = await AccountModel.exists({_id: userId});
+
+        if (!account) {
+            throw AccountError.AccountNotFound();
+        }
+        if (!user) {
+            throw AccountError.UserNotFound();
+        }
+        if (account.follows.items.includes(userId)) {
+            throw AccountError.UserAlreadyFollowed()
+        }
+
+        account.follows.count += 1;
+        account.follows.items.push(userId);
+        await account.save();
+    }
+
+    static async unfollowUser(accountId, userId) {
+        const account = await AccountModel.findById(accountId, {follows: 1})
+        const user = await AccountModel.exists({_id: userId});
+
+        if (!account) {
+            throw AccountError.AccountNotFound();
+        }
+        if (!user) {
+            throw AccountError.UserNotFound();
+        }
+        if (!account.follows.items.includes(userId)) {
+            throw AccountError.UserNotFollowed()
+        }
+
+        account.follows.count -= 1;
+        account.follows.items = account.follows.items.filter(item => item !== userId);
+        await account.save();
+    }
 }
