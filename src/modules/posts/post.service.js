@@ -25,7 +25,8 @@ export class PostService {
         {
             page=1,
             limit=10,
-            feed="new"
+            feed="new",
+            author=null,
         }
     ) {
         if (limit > 25) {
@@ -45,7 +46,7 @@ export class PostService {
             bookmarks = account.bookmarks?.items;
         }
 
-        const filterOptions = {
+        const feedFilterOptions = {
             "popular": {},
             "new": {},
             "followed": {author: { $in: follows }},
@@ -53,7 +54,7 @@ export class PostService {
             "drafts": {author: accountId, isPublished: false},
         }
 
-        const paginateOptions = {
+        const feedPaginateOptions = {
             "popular": {sort: {rating: -1}},
             "new": {sort: {publishedAt: -1}},
             "followed": {sort: {publishedAt: -1}},
@@ -61,8 +62,15 @@ export class PostService {
             "drafts": {sort: {publishedAt: -1}},
         }
 
+        const authorOptions = author ? { author } : {}
+
         const paginatedPosts = await PostModel.paginate(
-            { isPublished: true, ...filterOptions[feed] },
+            {
+                isPublished: true,
+                ...feedFilterOptions[feed],
+                ...authorOptions
+
+            },
             {
                 "page": page,
                 "limit": limit,
@@ -74,7 +82,7 @@ export class PostService {
                         profile: {fullname: 1, avatar: 1}
                     }
                 },
-                ...paginateOptions[feed],
+                ...feedPaginateOptions[feed],
             }
         );
 
