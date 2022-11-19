@@ -41,6 +41,14 @@ router.post("/:postId/unlike",
     [AuthMiddleware.authorized],
     PostController.unlikePost
 )
+router.post("/:postId/bookmark",
+    [AuthMiddleware.authorized],
+    PostController.bookmarkPost
+)
+router.post("/:postId/unbookmark",
+    [AuthMiddleware.authorized],
+    PostController.unbookmarkPost
+)
 router.get("/:postId/comments",
     [AuthMiddleware.optionalAuthorized],
     PostController.getPostComments

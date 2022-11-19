@@ -98,6 +98,30 @@ export class PostController {
         }
     }
 
+    static async bookmarkPost(req, res, next) {
+        try {
+            const { accountId } = req.token;
+            const { postId } = req.params;
+
+            await PostService.bookmarkPost(accountId, postId);
+            res.status(200).json("OK");
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static async unbookmarkPost(req, res, next) {
+        try {
+            const { accountId } = req.token;
+            const { postId } = req.params;
+
+            await PostService.unbookmarkPost(accountId, postId);
+            res.status(200).json("OK");
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static async getPostComments(req, res, next) {
         try {
             const { accountId } = req.token;

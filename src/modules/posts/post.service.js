@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { slug } from "slug-gen";
 
+import { AccountModel } from "../accounts/account.model";
 import { PostModel } from "./post.model";
 import { PostValidator } from "./post.validator";
 import { PostError } from "./post.exceptions";
@@ -110,6 +111,30 @@ export class PostService {
         post.likes.count -= 1;
         post.likes.items = post.likes.items.filter(item => item !== accountId);
         await post.save();
+    }
+
+    static async bookmarkPost(accountId, postId) {
+        const account = await AccountModel.findById(accountId, {bookmarks: 1})
+
+        if (account.bookmarks.items.includes(postId)) {
+            throw PostError.PostAlreadyBookmarked()
+        }
+
+        account.bookmarks.count += 1;
+        account.bookmarks.items.push(postId);
+        await account.save();
+    }
+
+    static async unbookmarkPost(accountId, postId) {
+        const account = await AccountModel.findById(accountId, {bookmarks: 1})
+
+        if (!account.bookmarks.items.includes(postId)) {
+            throw PostError.PostNotBookmarked()
+        }
+
+        account.bookmarks.count -= 1;
+        account.bookmarks.items = account.bookmarks.items.filter(item => item !== postId);
+        await account.save();
     }
 
     static async getPostComments(accountId, postId) {
