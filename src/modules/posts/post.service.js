@@ -20,17 +20,52 @@ export class PostService {
         return post
     }
 
-    static async getAllPosts(accountId, {page=1, limit=10}) {
+    static async getAllPosts(
+        accountId,
+        {
+            page=1,
+            limit=10,
+            feed="new"
+        }
+    ) {
         if (limit > 25) {
             throw PostError.LimitOptionInvalidValue();
         }
 
+        let follows = null;
+        let bookmarks = null;
+
+        if (feed === "followed") {
+            const account = await AccountModel.findById(accountId, {follows: 1});
+            follows = account.follows?.items;
+        }
+
+        if (feed === "bookmarks") {
+            const account = await AccountModel.findById(accountId, {bookmarks: 1});
+            bookmarks = account.bookmarks?.items;
+        }
+
+        const filterOptions = {
+            "popular": {},
+            "new": {},
+            "followed": {author: { $in: follows }},
+            "bookmarks": {_id: { $in: bookmarks }},
+            "drafts": {author: accountId, isPublished: false},
+        }
+
+        const paginateOptions = {
+            "popular": {sort: {rating: -1}},
+            "new": {sort: {publishedAt: -1}},
+            "followed": {sort: {publishedAt: -1}},
+            "bookmarks": {sort: {publishedAt: -1}},
+            "drafts": {sort: {publishedAt: -1}},
+        }
+
         const paginatedPosts = await PostModel.paginate(
-            {isPublished: true},
+            { isPublished: true, ...filterOptions[feed] },
             {
                 "page": page,
                 "limit": limit,
-                "sort": {createdAt: -1},
                 "select": {content: 0},
                 "populate": {
                     path: 'author',
@@ -39,6 +74,7 @@ export class PostService {
                         profile: {fullname: 1, avatar: 1}
                     }
                 },
+                ...paginateOptions[feed],
             }
         );
 

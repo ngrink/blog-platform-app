@@ -40,6 +40,10 @@ const PostSchema = new Schema({
         type: Number,
         default: 0
     },
+    rating: {
+        type: Number,
+        default: 0
+    },
     isPublished: {
         type: Boolean,
         default: false
