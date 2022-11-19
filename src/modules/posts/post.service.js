@@ -29,6 +29,7 @@ export class PostService {
             feed="new",
             author=null,
             range=null,
+            query=null
         }
     ) {
         if (limit > 25) {
@@ -72,12 +73,20 @@ export class PostService {
                 : {}
         }
 
+        const queryOptions = query ? {
+            $or: [
+                {title: new RegExp(query, "i")},
+                {description: new RegExp(query, "i")}
+            ]
+        } : {}
+
         const paginatedPosts = await PostModel.paginate(
             {
                 isPublished: true,
                 ...feedFilterOptions[feed],
                 ...authorOptions,
-                ...rangeOptions(range)
+                ...rangeOptions(range),
+                ...queryOptions
             },
             {
                 "page": page,

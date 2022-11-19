@@ -17,9 +17,9 @@ export class PostController {
     static async getAllPosts(req, res, next) {
         try {
             const { accountId } = req.token;
-            const { page, limit, feed, author, range } = req.query;
+            const { page, limit, feed, author, range, query } = req.query;
 
-            const posts = await PostService.getAllPosts(accountId, {page, limit, feed, author, range});
+            const posts = await PostService.getAllPosts(accountId, {page, limit, feed, author, range, query});
             res.status(200).json(posts);
         } catch (e) {
             next(e);
