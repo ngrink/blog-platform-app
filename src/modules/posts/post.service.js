@@ -1,4 +1,5 @@
-import Joi from "joi";
+import axios from "axios";
+import crypto from "crypto";
 import { slug } from "slug-gen";
 
 import { AccountModel } from "../accounts/account.model";
@@ -178,6 +179,183 @@ export class PostService {
         delete post.likes.items;
         delete post.comments.items;
 
+        return post;
+    }
+
+    static async _computeAndPersistPostRatings() {
+        const posts = await PostModel.find(
+            {}, {"likes.count": 1, "comments.count": 1, "views": 1},
+        )
+
+        posts.map(post => {
+            post.rating = (post.likes.count) + (3 * post.comments.count) + (0.3 * post.views)
+            post.save();
+        })
+    }
+
+    static async _generateRandomPost(accountId) {
+        const title = await axios.get("https://fish-text.ru/get?type=title&number=1&format=json");
+        const description = await axios.get("https://fish-text.ru/get?type=sentence&number=3&format=json");
+        const blocks = []
+
+        const sectionsN = Math.round(Math.random() * 3 + 2);
+        for (let i=0; i < sectionsN; i++) {
+            blocks.push({
+                id: crypto.randomBytes(5).toString('hex'),
+                type: "header",
+                data: {
+                    text: (await axios.get("https://fish-text.ru/get?type=title&number=1&format=json")).data.text,
+                    level: 3
+                }
+            })
+
+            const paragraphsN = Math.round(Math.random() * 2 + 1);
+            for (let i=0; i < paragraphsN; i++) {
+                blocks.push({
+                    id: crypto.randomBytes(5).toString('hex'),
+                    type: "paragraph",
+                    data: {
+                        text: (await axios.get(`https://fish-text.ru/get?type=paragraph&number=1&format=json`)).data.text }
+                })
+            }
+        }
+
+        const content = {
+            blocks: [
+                ...blocks
+            ]
+        }
+
+        const tagsData = [
+            "Network",
+            "Infrastructure",
+            "Engineering",
+            "React",
+            "Hardware",
+            "Nvidia",
+            "RDNA",
+            "Ryzen",
+            "Redux",
+            "NextJS",
+            "Web development",
+            "ChakraUI",
+            "React Hook Form",
+            "React Query",
+            "GraphQL",
+            "NodeJS",
+            "Express",
+            "Technologies",
+            "React Router",
+            "Backup",
+            "Compressing",
+            "Event",
+            "Code",
+            "Byte",
+            "Algorithm",
+            "Database",
+            "Debugger",
+            "Developer   ",
+            "Azure",
+            "Microsoft",
+            "Apple",
+            "Yandex",
+            "Google",
+            "Twitter",
+            "VK",
+            "Youtube",
+            "Hacking ",
+            "LAN",
+            "LCD",
+            "Level",
+            "Library",
+            "Logfile",
+            "Package",
+            "Mail",
+            "LSM",
+            "Programming language",
+            "Replica",
+            "Random",
+            "Signature",
+            "Software ",
+            "Toolkit",
+            "ASP",
+            "Abstraction",
+            "Interface",
+            "Agile",
+            "Scrum",
+            "Administration",
+            "Identitification",
+            "Accounting",
+            "Access",
+            "Alpha",
+            "Delta",
+            "API",
+            "Archivation",
+            "Outsource",
+            "Bug",
+            "Report",
+            "Bundling",
+            "Headless",
+            "Benchmarking",
+            "Testing",
+            "DevOps",
+            "Big data",
+            "Backlog",
+            "Validation",
+            "Wi-Fi",
+            "Badblocks",
+            "Windows",
+            "Virus",
+            "Gadget",
+            "Guide",
+            "Gate",
+            "Git",
+            "GitHub",
+            "GitLab",
+            "GUI",
+            "Dump",
+            "Downloaders",
+            "Deadline",
+            "Deploy",
+            "Destructor",
+            "Jumper",
+            "Junior",
+            "Middle",
+            "Senior",
+            "Hardware",
+            "Releases",
+            "HTTP",
+            "HTTPS",
+            "SSL",
+            "ICMP",
+            "SMTP",
+            "DNS",
+            "TCP/IP",
+            "MAC",
+            "Encapsulation",
+        ]
+
+        const tn = Math.round(Math.random() * 7 + 3);
+        const tags = tagsData.sort(() => 0.5 - Math.random()).slice(0, tn)
+
+        let preview;
+        const isPreview = Math.random() <= 0.4;
+
+        if (isPreview) {
+            const pn = Math.round(Math.random() * 1000);
+            preview = `https://picsum.photos/id/${pn}/640/400`;
+        }
+
+        const body = {
+            "title": title.data.text,
+            "content": content,
+            "tags": tags,
+            "description": description.data.text,
+            "preview": preview,
+        }
+
+        const post = await PostService.createPost({author: accountId, ...body});
+        await PostService.publicatePost(post._id);
         return post;
     }
 }
