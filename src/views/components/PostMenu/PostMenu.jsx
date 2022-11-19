@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react';
+import React, { useState } from 'react'
+import { Box, IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
@@ -8,11 +8,28 @@ export const PostMenu = ({
     postId,
     isPostOwnedByUser,
     isPublished,
+    isBookmarked: initialIsBookmarked,
     onDeletePost,
-    onPublishPost
+    onPublishPost,
+    onBookmarkPost,
+    onUnbookmarkPost,
 }) => {
+    const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
+
     return (
         <Box>
+            <IconButton
+                variant="ghost"
+                cursor="pointer"
+                icon={isBookmarked
+                    ? <FontAwesomeIcon icon="fa-solid fa-bookmark" color="red" />
+                    : <FontAwesomeIcon icon="fa-regular fa-bookmark" />
+                }
+                onClick={isBookmarked
+                    ? () => {onUnbookmarkPost(); setIsBookmarked(false)}
+                    : () => {onBookmarkPost(); setIsBookmarked(true)}
+                }
+            />
             <Menu>
                 <MenuButton
                     as={IconButton}

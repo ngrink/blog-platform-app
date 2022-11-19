@@ -8,7 +8,7 @@ import { PostMenu } from '../../components/PostMenu/PostMenu'
 import { toastError, toastInfo, toastSuccess } from '../../../utils/helpers/toasts'
 
 
-export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished }) => {
+export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished, isBookmarked }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -70,13 +70,23 @@ export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished }) =>
         publishPost.mutate(postId);
     }, [publishPost, postId])
 
+    const onBookmarkPost = useCallback(() => {
+        PostAPI.bookmarkPost(postId);
+    }, [postId])
+    const onUnbookmarkPost = useCallback(() => {
+        PostAPI.unbookmarkPost(postId);
+    }, [postId])
+
     return (
         <PostMenu
             postId={postId}
             isPostOwnedByUser={isPostOwnedByUser}
             isPublished={isPublished}
+            isBookmarked={isBookmarked}
             onDeletePost={onDeletePost}
             onPublishPost={onPublishPost}
+            onBookmarkPost={onBookmarkPost}
+            onUnbookmarkPost={onUnbookmarkPost}
         />
     )
 }

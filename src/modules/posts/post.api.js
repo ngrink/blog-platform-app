@@ -45,6 +45,16 @@ export class PostAPI {
         return data;
     }
 
+    static async bookmarkPost(postId) {
+        const { data } = await $axios.post(`/posts/${postId}/bookmark`);
+        return data;
+    }
+
+    static async unbookmarkPost(postId) {
+        const { data } = await $axios.post(`/posts/${postId}/unbookmark`);
+        return data;
+    }
+
     static async getPostComments(postId) {
         const { data } = await $axios.get(`/posts/${postId}/comments`);
         return data;

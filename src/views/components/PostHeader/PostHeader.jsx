@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Spacer } from '@chakra-ui/react';
+import { Flex, Spacer } from '@chakra-ui/react';
 import moment from 'moment';
 
 import { UserAvatar } from '../UserAvatar';
@@ -11,7 +11,8 @@ export const PostHeader = ({
     author,
     publishedAt,
     isPostOwnedByUser,
-    isPublished
+    isPublished,
+    isBookmarked
 }) => {
     return (
         <Flex w="100%">
@@ -26,6 +27,7 @@ export const PostHeader = ({
                 postId={postId}
                 isPostOwnedByUser={isPostOwnedByUser}
                 isPublished={isPublished}
+                isBookmarked={isBookmarked}
             />
         </Flex>
     )

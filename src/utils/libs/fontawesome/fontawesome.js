@@ -15,7 +15,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
     faMessage as faMessageRegular ,
-    faHeart as faHeartRegular
+    faHeart as faHeartRegular,
+    faBookmark as faBookmarkRegular
 } from '@fortawesome/free-regular-svg-icons';
 
 
@@ -34,5 +35,7 @@ library.add(
     faFireFlameCurved,
     faClock,
     faBookmark,
-    faPenToSquare
+    faPenToSquare,
+    faBookmark,
+    faBookmarkRegular
 )

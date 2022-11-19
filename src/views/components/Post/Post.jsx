@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { Box, Flex, Heading, Spacer, Text, VStack } from '@chakra-ui/react';
 import Output from 'editorjs-react-renderer';
 
@@ -26,6 +25,7 @@ export const Post = ({
     views,
     isPostOwnedByUser,
     isPublished,
+    isBookmarked,
     onLike,
     onUnlike
 }) => {
@@ -38,6 +38,7 @@ export const Post = ({
                     publishedAt={publishedAt}
                     isPostOwnedByUser={isPostOwnedByUser}
                     isPublished={isPublished}
+                    isBookmarked={isBookmarked}
                 />
                 <PostTags
                     tags={tags}
