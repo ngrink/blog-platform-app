@@ -1,5 +1,6 @@
 import axios from "axios";
 import crypto from "crypto";
+import moment from "moment";
 import { slug } from "slug-gen";
 
 import { AccountModel } from "../accounts/account.model";
@@ -27,6 +28,7 @@ export class PostService {
             limit=10,
             feed="new",
             author=null,
+            range=null,
         }
     ) {
         if (limit > 25) {
@@ -64,12 +66,18 @@ export class PostService {
 
         const authorOptions = author ? { author } : {}
 
+        const rangeOptions = (range) => {
+            return range
+                ? {publishedAt: {$gte: moment().subtract(1, range).toDate()}}
+                : {}
+        }
+
         const paginatedPosts = await PostModel.paginate(
             {
                 isPublished: true,
                 ...feedFilterOptions[feed],
-                ...authorOptions
-
+                ...authorOptions,
+                ...rangeOptions(range)
             },
             {
                 "page": page,
