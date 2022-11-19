@@ -20,7 +20,8 @@ export const PostCardListContainer = ({ feed }) => {
             lastPage.hasNextPage
                 ? {page: lastPage.nextPage, limit: lastPage.limit}
                 : undefined
-        )
+        ),
+        staleTime: 60000
     })
 
     const scrollRef = useCallback((node) => {

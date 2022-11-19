@@ -9,7 +9,11 @@ import { Post } from '../../components/Post';
 
 export const PostContainer = () => {
     const { postId } = useParams();
-    const { isLoading ,error, data } = useQuery(['posts', postId], () => PostAPI.getPost(postId))
+    const { isLoading ,error, data } = useQuery(
+        ['posts', postId],
+        () => PostAPI.getPost(postId),
+        { staleTime: 60000 }
+    )
 
     if (isLoading) {
         return (
