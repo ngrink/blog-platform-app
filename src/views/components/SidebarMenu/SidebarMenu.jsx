@@ -33,7 +33,7 @@ export const SidebarMenu = () => {
                 </NavLink>
             </ListItem>
             <ListItem className={cl.item}>
-                <NavLink to="/subscribed" className={NavLinkClassName}>
+                <NavLink to="/followed" className={NavLinkClassName}>
                     <HStack spacing={4}>
                         <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
                         <Text>Моя лента</Text>

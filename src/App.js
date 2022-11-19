@@ -6,6 +6,9 @@ import './assets/css/App.css';
 
 const MainLayout = React.lazy(() => import('./views/layouts/MainLayout'));
 const PopularPostsScreen = React.lazy(() => import('./views/screens/PopularPostsScreen'));
+const NewPostsScreen = React.lazy(() => import('./views/screens/NewPostsScreen'));
+const FollowedPostsScreen = React.lazy(() => import('./views/screens/FollowedPostsScreen'));
+const BookmarkedPostsScreen = React.lazy(() => import('./views/screens/BookmarkedPostsScreen'));
 const PostScreen = React.lazy(() => import('./views/screens/PostScreen'));
 const PostEditScreen = React.lazy(() => import('./views/screens/PostEditScreen'));
 const PostCreateScreen = React.lazy(() => import('./views/screens/PostCreateScreen'));
@@ -23,6 +26,9 @@ export const App = () => {
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<Navigate to="/popular" replace={true} />} />
                     <Route path="/popular" element={<PopularPostsScreen />} />
+                    <Route path="/new" element={<NewPostsScreen />} />
+                    <Route path="/followed" element={<FollowedPostsScreen />} />
+                    <Route path="/bookmarks" element={<BookmarkedPostsScreen />} />
                     <Route path="/posts/new" element={<PostCreateScreen />} />
                     <Route path="/posts/:postId" element={<PostScreen />} />
                     <Route path="/posts/:postId/edit" element={<PostEditScreen />} />

@@ -7,15 +7,15 @@ import { PostCardList } from '../../components/PostCardList';
 import { toastError } from '../../../utils/helpers/toasts';
 
 
-export const PostCardListContainer = () => {
+export const PostCardListContainer = ({ feed }) => {
     const queryClient = useQueryClient();
     const toast = useToast();
     const scrollObserver = useRef();
     const [deletedPosts, setDeletedPosts] = useState(new Set());
 
     const { isFetching, isFetchingNextPage, error, data, hasNextPage, fetchNextPage } = useInfiniteQuery({
-        queryKey: ['posts'],
-        queryFn: ({ pageParam = {page: 1, limit: 10} }) => PostAPI.getAllPosts(pageParam),
+        queryKey: ['posts', { feed }],
+        queryFn: ({ pageParam = {page: 1, limit: 10} }) => PostAPI.getAllPosts({...pageParam, feed}),
         getNextPageParam: (lastPage, pages) => (
             lastPage.hasNextPage
                 ? {page: lastPage.nextPage, limit: lastPage.limit}
@@ -136,7 +136,7 @@ export const PostCardListContainer = () => {
         <VStack as="ul" gap="50px" listStyleType="none">
             {data.pages.map(
                 (page) => (
-                    <Box as="li" key={page.page}>
+                    <Box as="li" key={page.page} w="100%">
                         <PostCardList
                             posts={page.docs}
                             deletedPosts={deletedPosts}
