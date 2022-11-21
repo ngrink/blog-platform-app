@@ -36,33 +36,20 @@ export class PostService {
             throw PostError.LimitOptionInvalidValue();
         }
 
-        let follows = null;
-        let bookmarks = null;
+        const account = await AccountModel.findById(
+            accountId,
+            {
+                bookmarks: 1,
+                ...(feed === "followed" && {follows: 1})
+            }
+        );
 
-        if (feed === "followed") {
-            const account = await AccountModel.findById(accountId, {follows: 1});
-            follows = account.follows?.items;
-        }
-
-        if (feed === "bookmarks") {
-            const account = await AccountModel.findById(accountId, {bookmarks: 1});
-            bookmarks = account.bookmarks?.items;
-        }
-
-        const feedFilterOptions = {
+        const feedOptions = {
             "popular": {},
             "new": {},
-            "followed": {author: { $in: follows }},
-            "bookmarks": {_id: { $in: bookmarks }},
+            "followed": {author: { $in: account.follows?.items }},
+            "bookmarks": {_id: { $in: account.bookmarks?.items }},
             "drafts": {author: accountId, isPublished: false},
-        }
-
-        const feedPaginateOptions = {
-            "popular": {sort: {rating: -1}},
-            "new": {sort: {publishedAt: -1}},
-            "followed": {sort: {publishedAt: -1}},
-            "bookmarks": {sort: {publishedAt: -1}},
-            "drafts": {sort: {publishedAt: -1}},
         }
 
         const authorOptions = author ? { author } : {}
@@ -72,7 +59,6 @@ export class PostService {
                 ? {publishedAt: {$gte: moment().subtract(1, range).toDate()}}
                 : {}
         }
-
         const queryOptions = query ? {
             $or: [
                 {title: new RegExp(query, "i")},
@@ -80,10 +66,18 @@ export class PostService {
             ]
         } : {}
 
+        const paginateOptions = {
+            "popular": {sort: {rating: -1, publishedAt: -1}},
+            "new": {sort: {publishedAt: -1}},
+            "followed": {sort: {publishedAt: -1}},
+            "bookmarks": {sort: {publishedAt: -1}},
+            "drafts": {sort: {publishedAt: -1}},
+        }
+
         const paginatedPosts = await PostModel.paginate(
             {
                 isPublished: true,
-                ...feedFilterOptions[feed],
+                ...feedOptions[feed],
                 ...authorOptions,
                 ...rangeOptions(range),
                 ...queryOptions
@@ -99,12 +93,12 @@ export class PostService {
                         profile: {fullname: 1, avatar: 1}
                     }
                 },
-                ...feedPaginateOptions[feed],
+                ...paginateOptions[feed],
             }
         );
 
         paginatedPosts.docs = paginatedPosts.docs.map(post => {
-            const postData = PostService._computePostFields(accountId, post._doc)
+            const postData = PostService._computePostFields(account, post._doc)
             return postData
         })
 
@@ -121,10 +115,13 @@ export class PostService {
         if (!post) {
             throw PostError.PostNotFound();
         }
+
+        const account = await AccountModel.findById(accountId, { bookmarks: 1 });
+        const postData = PostService._computePostFields(account, post._doc);
+
         post.views += 1;
         post.save();
 
-        const postData = PostService._computePostFields(accountId, post._doc);
         return postData
     }
 
@@ -233,8 +230,12 @@ export class PostService {
         })
     }
 
-    static _computePostFields(accountId, post) {
+    static _computePostFields(account, post) {
+        const accountId = account._id;
+        const postId = post._id;
+
         post.isPostOwnedByUser = post.author._id == accountId
+        post.isBookmarked = account.bookmarks.items.includes(postId);
         post.likes.isLikedByUser =  post.likes.items.includes(accountId);
         post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
         delete post.likes.items;
