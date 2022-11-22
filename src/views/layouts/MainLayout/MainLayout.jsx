@@ -9,7 +9,7 @@ export const MainLayout = () => {
   return (
     <>
         <Header />
-        <Box as="main" pt="60px">
+        <Box as="main" pt="60px" h="100%">
             <Outlet />
         </Box>
     </>
