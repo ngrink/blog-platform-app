@@ -5,6 +5,8 @@ import { Spinner } from '@chakra-ui/react';
 import './assets/css/App.css';
 
 const MainLayout = React.lazy(() => import('./views/layouts/MainLayout'));
+const RegisterScreen = React.lazy(() => import('./views/screens/RegisterScreen'));
+const LoginScreen = React.lazy(() => import('./views/screens/LoginScreen'));
 const PopularPostsScreen = React.lazy(() => import('./views/screens/PopularPostsScreen'));
 const NewPostsScreen = React.lazy(() => import('./views/screens/NewPostsScreen'));
 const FollowedPostsScreen = React.lazy(() => import('./views/screens/FollowedPostsScreen'));
@@ -20,8 +22,8 @@ export const App = () => {
         <Suspense fallback={<Spinner />}>
             <Routes>
                 <Route element={<MainLayout />}>
-                    <Route path="/login" element={<h1>LoginPage</h1>} />
-                    <Route path="/register" element={<h1>RegisterPage</h1>} />
+                    <Route path="/login" element={<LoginScreen />} />
+                    <Route path="/register" element={<RegisterScreen />} />
                 </Route>
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<Navigate to="/popular" replace={true} />} />
