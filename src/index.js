@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import reportWebVitals from './reportWebVitals';
 
+import { AuthProvider } from './modules/auth/auth.context';
 import { App } from './App';
 import { theme } from './utils/libs/chakra';
 import './utils/libs/fontawesome';
@@ -27,7 +28,9 @@ root.render(
     <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}>
             <BrowserRouter>
-                <App />
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
             </BrowserRouter>
         </ChakraProvider>
         <ReactQueryDevtools />
