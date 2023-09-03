@@ -1,0 +1,42 @@
+.menu {
+    width: 100%;
+    padding: 15px;
+
+    list-style-type: none;
+    background-color: transparent;
+}
+
+.item svg {
+    width: 19px;
+    height: 19px;
+}
+
+.item.bookmarks svg {
+    width: 17px;
+    height: 17px;
+}
+
+.link {
+    display: block;
+    width: 100%;
+    padding: 12px 24px;
+
+    font-size: 17px;
+    font-weight: 500;
+    color: #333;
+    border-radius: 10px;
+    opacity: 0.85;
+}
+
+.active {
+    background-color: #fff;
+    opacity: 1;
+
+    svg {
+        color: rgb(0, 109, 233);
+    }
+}
+
+.link:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.45);
+}
