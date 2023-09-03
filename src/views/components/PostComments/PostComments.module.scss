@@ -1,0 +1,16 @@
+.postComments {
+  min-height: 150px;
+  padding-bottom: 50px;
+}
+
+.comment {
+  &:hover {
+    .commentMenuButton {
+      opacity: 1;
+    }
+  }
+}
+
+.commentMenuButton {
+  opacity: 0;
+}

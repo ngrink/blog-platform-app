@@ -1,25 +1,30 @@
 .avatarContainer {
     display: inline-block;
-    padding: 8px 0px;
+    padding: 0px 0px;
     max-width: 200px;
+}
+
+.name, .subtitle {
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .name {
     font-size: 16px;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 5px;
+}
+
+.username {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #bbb;
 }
 
 .subtitle {
     font-size: 14px;
     font-weight: 400;
     line-height: 1;
-    color: #aaa;
-}
-
-.name, .subtitle {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    color: #999;
 }

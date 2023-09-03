@@ -2,13 +2,22 @@ import { $axios } from "../../utils/libs/axios";
 
 
 export class AccountAPI {
-    static async createAccount(username, email, password, confirmPassword) {
-        const { data } = await $axios.post('/accounts/', {username, email, password, confirmPassword})
+    static async createAccount(fullname, username, email, password, confirmPassword) {
+        const { data } = await $axios.post('/accounts/',
+        {
+            profile: {
+                fullname
+            },
+            username,
+            email,
+            password,
+            confirmPassword
+        })
         return data;
     }
 
     static async getProfile(accountId) {
-        const { data } = await $axios.get(`/accounts/${accountId}/profile/`, {});
+        const { data } = await $axios.get(`/accounts/${accountId}/profile/`);
         return data;
     }
 

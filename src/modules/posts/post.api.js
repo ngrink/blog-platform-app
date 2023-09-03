@@ -7,9 +7,9 @@ export class PostAPI {
         return data;
     }
 
-    static async getAllPosts({ page, limit }) {
+    static async getAllPosts({ page, limit, feed }) {
         const { data } = await $axios.get(`/posts`, {
-            params: { page, limit }
+            params: { page, limit, feed }
         });
 
         return data;
@@ -30,7 +30,7 @@ export class PostAPI {
         return data;
     }
 
-    static async publicatePost(postId) {
+    static async publishPost(postId) {
         const { data } = await $axios.post(`/posts/${postId}/publish`);
         return data;
     }
@@ -45,6 +45,16 @@ export class PostAPI {
         return data;
     }
 
+    static async bookmarkPost(postId) {
+        const { data } = await $axios.post(`/posts/${postId}/bookmark`);
+        return data;
+    }
+
+    static async unbookmarkPost(postId) {
+        const { data } = await $axios.post(`/posts/${postId}/unbookmark`);
+        return data;
+    }
+
     static async getPostComments(postId) {
         const { data } = await $axios.get(`/posts/${postId}/comments`);
         return data;
@@ -54,4 +64,9 @@ export class PostAPI {
         const { data } = await $axios.post(`/posts/${postId}/comments`, {...commentData});
         return data;
     }
+
+    static async deletePostComment(postId, commentId) {
+      const { data } = await $axios.delete(`/posts/${postId}/comments/${commentId}`);
+      return data;
+  }
 }

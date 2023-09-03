@@ -1,29 +1,45 @@
 import React from 'react'
-import { HStack, Icon } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { HStack, Portal } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { useToggle } from '../../../utils/hooks/useToggle';
+import { CreatePostButtonContainer } from '../../containers/CreatePostButtonContainer';
+import { ProfileNavigationContainer } from '../../containers/ProfileNavigationContainer/ProfileNavigationContainer';
+import { Sidebar } from '../Sidebar/Sidebar';
+import { SearchBar } from '../SearchBar';
 import { Logo } from '../Logo';
 import cl from "./Header.module.scss";
 
 
+export const Header = observer(({ postStore }) => {
+  const [isSidebarOpen, toggleSidebar] = useToggle(true);
 
-export const Header = () => {
   return (
     <header className={cl.header}>
         <div className={cl.container}>
-            <HStack gap="8px">
-                <FontAwesomeIcon size="lg" icon="bars" color='#333'
-                    onClick={() => console.log(`Hamburger clicked`)}
-                    aria-label="Открыть меню"
+            <HStack gap="8px" justifySelf={"left"}>
+                <FontAwesomeIcon size="lg" icon="bars" color='#ddd' opacity={0.35}
+                    onClick={toggleSidebar}
+                    cursor="pointer"
+                    aria-label="Открыть боковое меню"
                 />
-                <Logo />
+                <Link to="/">
+                    <Logo />
+                </Link>
             </HStack>
-            <HStack>
-            {/* <SearchBar /> */}
-            {/* <CreateBtn /> */}
+            <HStack width={"640px"}>
+                <SearchBar />
             </HStack>
-            {/* <Profile /> */}
+            <HStack display={"flex"} gap={"16px"} justifyContent={"flex-end"}>
+                <CreatePostButtonContainer />
+                <ProfileNavigationContainer />
+            </HStack>
+            <Portal>
+                <Sidebar isSidebarOpen={isSidebarOpen}/>
+            </Portal>
         </div>
     </header>
   )
-}
+})

@@ -5,17 +5,22 @@ import { PostCard } from '../PostCard';
 
 
 export const PostCardList = ({ posts, onLike, onUnlike }) => {
+    if (!posts.length) {
+      return null
+    }
+
     return (
         <VStack gap="50px" as="ul" listStyleType="none">
-            {posts && posts.map(post => (
-                <li key={post._id}>
-                    <PostCard
-                        {...post}
-                        onLike={onLike}
-                        onUnlike={onUnlike}
-                    />
-                </li>
-            ))}
+        {posts.map((post) => (
+            <li key={post._id} style={{width: "100%"}}>
+                <PostCard
+                    {...post}
+                    onLike={onLike}
+                    onUnlike={onUnlike}
+                />
+            </li>
+          ))
+        }
         </VStack>
     )
 }
