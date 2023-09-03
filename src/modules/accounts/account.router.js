@@ -17,5 +17,13 @@ router.patch("/:accountId/profile",
     AccountMiddleware.accountOwner],
     AccountController.updateProfile
 )
+router.post("/:accountId/follow",
+    [AuthMiddleware.authorized],
+    AccountController.followUser
+)
+router.post("/:accountId/unfollow",
+    [AuthMiddleware.authorized],
+    AccountController.unfollowUser
+)
 
 export { router as AccountRouter };

@@ -1,4 +1,4 @@
-export class AccessPayloadDto {
+export class AccountDto {
     accountId;
     username;
     email;

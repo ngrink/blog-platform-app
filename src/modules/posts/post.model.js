@@ -18,7 +18,7 @@ const PostSchema = new Schema({
         required: true
     },
     content: {
-        type: String,
+        type: Object,
         required: true
     },
     tags: {
@@ -33,19 +33,25 @@ const PostSchema = new Schema({
         count: { type: Number, default: 0 },
         items: [{
             author: { type: Schema.Types.ObjectId, ref: "Account" },
-            comment: { type: String }
+            comment: { type: String },
+            createdAt: { type: Date, default: Date.now() }
         }],
     },
     views: {
         type: Number,
         default: 0
     },
-    published: {
+    rating: {
+        type: Number,
+        default: 0
+    },
+    isPublished: {
         type: Boolean,
         default: false
     },
     description: String,
     preview: String,
+    publishedAt: Date,
 }, {
     timestamps: true
 })

@@ -18,7 +18,15 @@ const AccountSchema = new Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    profile: ProfileSchema
+    profile: ProfileSchema,
+    bookmarks: {
+        count: { type: Number, default: 0 },
+        items: { type: [String], default: [] },
+    },
+    follows: {
+        count: { type: Number, default: 0 },
+        items: { type: [String], default: [] },
+    }
 }, {
     timestamps: true
 })

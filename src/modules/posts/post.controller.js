@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { PostService } from "./post.service";
 
 
@@ -19,9 +17,9 @@ export class PostController {
     static async getAllPosts(req, res, next) {
         try {
             const { accountId } = req.token;
-            const { page, limit } = req.query;
+            const { page, limit, feed, author, range, query } = req.query;
 
-            const posts = await PostService.getAllPosts(accountId, {page, limit}); // #TODO: Add filtering
+            const posts = await PostService.getAllPosts(accountId, {page, limit, feed, author, range, query});
             res.status(200).json(posts);
         } catch (e) {
             next(e);
@@ -30,9 +28,10 @@ export class PostController {
 
     static async getPost(req, res, next) {
         try {
+            const { accountId } = req.token;
             const { postId } = req.params;
 
-            const post = await PostService.getPost(postId);
+            const post = await PostService.getPost(accountId, postId);
             res.status(200).json(post);
         } catch (e) {
             next(e);
@@ -97,6 +96,30 @@ export class PostController {
         }
     }
 
+    static async bookmarkPost(req, res, next) {
+        try {
+            const { accountId } = req.token;
+            const { postId } = req.params;
+
+            await PostService.bookmarkPost(accountId, postId);
+            res.status(200).json("OK");
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static async unbookmarkPost(req, res, next) {
+        try {
+            const { accountId } = req.token;
+            const { postId } = req.params;
+
+            await PostService.unbookmarkPost(accountId, postId);
+            res.status(200).json("OK");
+        } catch (e) {
+            next(e);
+        }
+    }
+
     static async getPostComments(req, res, next) {
         try {
             const { accountId } = req.token;
@@ -122,207 +145,23 @@ export class PostController {
         }
     }
 
+    static async deletePostComment(req, res, next) {
+      try {
+          const { accountId } = req.token;
+          const { postId, commentId } = req.params;
+
+          await PostService.deletePostComment(postId, commentId);
+          res.status(200).json("OK");
+      } catch (e) {
+          next(e);
+      }
+  }
+
     static async generateRandomPost(req, res, next) {
         try {
             const { accountId } = req.token;
 
-            const title = await axios.get("https://fish-text.ru/get?type=title&number=1&format=json");
-            const description = await axios.get("https://fish-text.ru/get?type=sentence&number=3&format=json");
-
-            const n = Math.round(Math.random() * 10 + 5);
-            const content = await axios.get(`https://fish-text.ru/get?type=paragraph&number=${n}&format=json`)
-
-            const tagsData = [
-                "Network",
-                "Infrastructure",
-                "Engineering",
-                "React",
-                "Hardware",
-                "Nvidia",
-                "RDNA",
-                "Ryzen",
-                "Redux",
-                "NextJS",
-                "Web development",
-                "ChakraUI",
-                "React Hook Form",
-                "React Query",
-                "GraphQL",
-                "NodeJS",
-                "Express",
-                "Gogym",
-                "Sizunit",
-                "Kob",
-                "Waz",
-                "Kuryr",
-                "Waq",
-                "Hydoduc",
-                "Akacizojo",
-                "Cosyb",
-                "Ypa",
-                "Ohewa",
-                "Lixusar",
-                "Aze",
-                "Rytujep",
-                "Lynok",
-                "Rumer",
-                "Hixopykak",
-                "Bid",
-                "Gonyjul",
-                "Haqytygaf",
-                "Luzaz",
-                "Fetej",
-                "Tovogezix",
-                "Eto",
-                "Fywim",
-                "Ceh",
-                "Dat",
-                "Lymit",
-                "Typeb",
-                "Xin",
-                "Uxitegeqa",
-                "Vaqagyb",
-                "Wegafaj",
-                "Ufu",
-                "Vumapas",
-                "Waqesihaq",
-                "Ehube",
-                "Pymab",
-                "Xyg",
-                "Dejegaw",
-                "Caj",
-                "Ocufywaxo",
-                "Tasij",
-                "Yqyxari",
-                "Mygasog",
-                "Puz",
-                "Ryqujub",
-                "Najyc",
-                "Tacof",
-                "Nazylihoc",
-                "Ziwez",
-                "Enavy",
-                "Tunyp",
-                "Ipa",
-                "Fof",
-                "Zakit",
-                "Gaberydos",
-                "Safij",
-                "Okeku",
-                "Ehaco",
-                "Zofuh",
-                "Kywinim",
-                "Movilis",
-                "Zacojul",
-                "Syn",
-                "Ryd",
-                "Rurytev",
-                "Egivyloza",
-                "Xyqib",
-                "Zimab",
-                "Aboweno",
-                "Igoqewo",
-                "Tesot",
-                "Egeko",
-                "Sebovol",
-                "Fet",
-                "Haxiqeriv",
-                "Byv",
-                "Aquxisi",
-                "Tarosir",
-                "God",
-                "Kyboj",
-                "Vevyp",
-                "Nosuc",
-                "Kyqoc",
-                "Wuvim",
-                "Munohok",
-                "Syken",
-                "Adyge",
-                "Zedyvub",
-                "Eluve",
-                "Wovymat",
-                "Vomux",
-                "Upanumo",
-                "Vaxifur",
-                "Cofyw",
-                "Hucidax",
-                "Gyceh",
-                "Uxy",
-                "Cyludinat",
-                "Hususuk",
-                "Mubud",
-                "Gofup",
-                "Kokik",
-                "Xepof",
-                "Ukanacy",
-                "Pikotygyb",
-                "Ewodyja",
-                "Mizap",
-                "Gufolyn",
-                "Ydili",
-                "Xovyt",
-                "Res",
-                "Towukev",
-                "Rodenajyb",
-                "Wyjetij",
-                "Witawam",
-                "Ruwoqac",
-                "Zovaw",
-                "Wyxad",
-                "Mezytivif",
-                "Rogapij",
-                "Vuzyvub",
-                "Ijeweve",
-                "Sog",
-                "Yteki",
-                "Xuc",
-                "Veq",
-                "Aqajaxo",
-                "Fop",
-                "Exacu",
-                "Ogiwigo",
-                "Dewywow",
-                "Dehef",
-                "Vosuz",
-                "Nyfeb",
-                "Fuwulab",
-                "Kaqer",
-                "Tivonip",
-                "Diver",
-                "Vosyr",
-                "Etyru",
-                "Kuqaqek",
-                "Ref",
-                "Nohivyz",
-                "Rucifeq",
-                "Ciwip",
-                "Fohugob",
-                "Ajubezuto",
-                "Axicy",
-            ]
-
-            const tn = Math.round(Math.random() * 7 + 3);
-            const tags = tagsData.sort(() => 0.5 - Math.random()).slice(0, tn)
-
-            let preview;
-            const isPreview = Math.random() > 0.65;
-
-            if (isPreview) {
-                const pn = Math.round(Math.random() * 1000);
-                preview = `https://picsum.photos/id/${pn}/640/400`;
-            }
-
-            const body = {
-                "title": title.data.text,
-                "content": content.data.text,
-                "tags": tags,
-                "description": description.data.text,
-                "preview": preview,
-            }
-
-            const post = await PostService.createPost({author: accountId, ...body});
-            await PostService.publicatePost(post._id);
+            const post = await PostService._generateRandomPost(accountId);
             res.status(200).json(post);
         } catch (e) {
             next(e);

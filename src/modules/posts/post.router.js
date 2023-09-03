@@ -41,6 +41,14 @@ router.post("/:postId/unlike",
     [AuthMiddleware.authorized],
     PostController.unlikePost
 )
+router.post("/:postId/bookmark",
+    [AuthMiddleware.authorized],
+    PostController.bookmarkPost
+)
+router.post("/:postId/unbookmark",
+    [AuthMiddleware.authorized],
+    PostController.unbookmarkPost
+)
 router.get("/:postId/comments",
     [AuthMiddleware.optionalAuthorized],
     PostController.getPostComments
@@ -49,6 +57,11 @@ router.post("/:postId/comments",
     [AuthMiddleware.authorized],
     PostController.createPostComment
 )
+router.delete("/:postId/comments/:commentId",
+    [AuthMiddleware.authorized],
+    PostController.deletePostComment
+)
+
 router.post("/generate",
     [AuthMiddleware.authorized],
     PostController.generateRandomPost

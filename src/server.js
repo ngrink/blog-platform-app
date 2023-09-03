@@ -7,6 +7,7 @@ import * as dotenv from 'dotenv';
 
 import { router } from "./server.router";
 import { errorHandler } from "./error.handler";
+import { PostService } from "./modules/posts";
 
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
@@ -18,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: true,
     credentials: true
 }));
 app.use("/api/", router);
@@ -40,6 +41,9 @@ async function main() {
             ? console.log(`[Server]`, error)
             : console.log(`[Server] Server is started on PORT ${PORT}`)
         );
+        setInterval(() => {
+          PostService._computeAndPersistPostRatings();
+        }, 1000 * 60 * 60)
     } catch (e) {
         console.log(`[Server]`, e)
     }

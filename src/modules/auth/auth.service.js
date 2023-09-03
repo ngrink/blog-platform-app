@@ -7,6 +7,7 @@ import { AuthModel } from "./auth.model";
 import { AccessPayloadDto } from "./dto/access.dto";
 import { RefreshPayloadDto } from "./dto/refresh.dto";
 import { AuthError } from "./auth.exceptions";
+import { AccountDto } from "./dto/account.dto";
 
 
 export class AuthService {
@@ -25,8 +26,10 @@ export class AuthService {
             throw AuthError.BadCredentials();
         }
 
-        const tokens = await AuthService._generateAndSaveTokens(account);
-        return tokens;
+        const accountData = {...new AccountDto(account)}
+        const { accessToken, refreshToken } = await AuthService._generateAndSaveTokens(account);
+
+        return {accountData, accessToken, refreshToken};
     }
 
     static async logout(accountId) {

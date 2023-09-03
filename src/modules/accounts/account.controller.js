@@ -35,4 +35,29 @@ export class AccountController {
             next(e);
         }
     }
+
+    static async followUser(req, res, next) {
+        try {
+            const { accountId } = req.token;
+            const { accountId: authorId } = req.params;
+
+            await AccountService.followUser(accountId, authorId);
+            res.status(200).json("OK");
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static async unfollowUser(req, res, next) {
+        try {
+            const { accountId } = req.token;
+            const { accountId: authorId } = req.params;
+
+            await AccountService.unfollowUser(accountId, authorId);
+            res.status(200).json("OK");
+        } catch (e) {
+            next(e);
+        }
+    }
+
 }

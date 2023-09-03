@@ -9,7 +9,7 @@ export class PostMiddleware {
             const { accountId } = req.token;
             const { postId } = req.params;
 
-            const isOwner = await PostService.checkPostOwner(postId, accountId);
+            const isOwner = await PostService._checkPostOwner(postId, accountId);
             isOwner
                 ? next()
                 : next(ApiError.Forbidden())

@@ -31,7 +31,7 @@ export class AccountService {
         );
 
         if (validation.error) {
-            throw AccountError.BadRequest("Not all request fields are specified correctly", validation.error.details);
+            throw AccountError.ValidationError(validation.error.details);
         }
 
         const usernameExists = await AccountModel.findOne({username})
@@ -56,7 +56,7 @@ export class AccountService {
     }
 
     static async getProfile(accountId) {
-        const account = await AccountModel.findOne({accountId}, {profile: 1});
+        const account = await AccountModel.findOne({accountId}, {username: 1, profile: 1});
         return account.profile
     }
 
@@ -73,5 +73,43 @@ export class AccountService {
         }
 
         return account.profile
+    }
+
+    static async followUser(accountId, userId) {
+        const account = await AccountModel.findById(accountId, {follows: 1})
+        const user = await AccountModel.exists({_id: userId});
+
+        if (!account) {
+            throw AccountError.AccountNotFound();
+        }
+        if (!user) {
+            throw AccountError.UserNotFound();
+        }
+        if (account.follows.items.includes(userId)) {
+            throw AccountError.UserAlreadyFollowed()
+        }
+
+        account.follows.count += 1;
+        account.follows.items.push(userId);
+        await account.save();
+    }
+
+    static async unfollowUser(accountId, userId) {
+        const account = await AccountModel.findById(accountId, {follows: 1})
+        const user = await AccountModel.exists({_id: userId});
+
+        if (!account) {
+            throw AccountError.AccountNotFound();
+        }
+        if (!user) {
+            throw AccountError.UserNotFound();
+        }
+        if (!account.follows.items.includes(userId)) {
+            throw AccountError.UserNotFollowed()
+        }
+
+        account.follows.count -= 1;
+        account.follows.items = account.follows.items.filter(item => item !== userId);
+        await account.save();
     }
 }
