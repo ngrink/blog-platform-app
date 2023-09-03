@@ -9,14 +9,14 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-    const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth") || false);
-    const [auth, setAuthData] = useState(localStorage.getItem("auth") || null);
+    const [isAuth, setIsAuth] = useState(JSON.parse(localStorage.getItem("isAuth")) || false);
+    const [auth, setAuthData] = useState(JSON.parse(localStorage.getItem("auth")) || null);
 
     const setAuth = useCallback((data) => {
         setIsAuth(true);
         setAuthData(data);
         localStorage.setItem("isAuth", true);
-        localStorage.setItem("auth", data);
+        localStorage.setItem("auth", JSON.stringify(data));
     }, []);
 
     const resetAuth = useCallback(() => {

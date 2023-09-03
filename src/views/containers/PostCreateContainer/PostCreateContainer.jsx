@@ -17,15 +17,15 @@ export const PostCreateContainer = () => {
 
     const createPost = useMutation((data) => PostAPI.createPost(data), {
         onMutate: () => {
-            toast(toastInfo({title: "Создание поста..."}));
+            toast(toastInfo({title: "Сохранение..."}));
         },
         onError: () => {
-            toast(toastError({title: "Пост не создан"}));
+            toast(toastError({title: "Не удалось сохранить черновик"}));
         },
         onSuccess: (post) => {
             toast.closeAll();
             setTimeout(() => {
-                toast(toastSuccess({title: "Пост создан", duration: 1000}));
+                toast(toastSuccess({title: "Черновик сохранен", duration: 1000}));
                 navigate(`/posts/${post._id}`);
             }, 500);
         },
@@ -40,7 +40,7 @@ export const PostCreateContainer = () => {
         <PostEdit
             editor={editor.element}
             status={createPost.status}
-            submitButton={{title: "Создать пост", loadingText: "Создание..."}}
+            submitButton={{title: "Сохранить в черновиках", loadingText: "Сохранение..."}}
             onSubmit={onSubmit}
         />
     )

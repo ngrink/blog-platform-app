@@ -6,7 +6,7 @@ import { PostCardListContainer } from '../../containers/PostCardListContainer'
 
 export const NewPostsScreen = () => {
     return (
-        <Box maxW="640px" mx="auto" pt="50px" pb="50px">
+        <Box maxW="640px" mx="auto" pt="50px" pb="50px" w="100%" minH="100%">
             <PostCardListContainer feed="new" />
         </Box>
     )

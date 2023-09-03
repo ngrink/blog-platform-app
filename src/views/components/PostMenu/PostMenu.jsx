@@ -30,7 +30,8 @@ export const PostMenu = ({
                     : () => {onBookmarkPost(); setIsBookmarked(true)}
                 }
             />
-            <Menu>
+            {isPostOwnedByUser &&
+              <Menu>
                 <MenuButton
                     as={IconButton}
                     aria-label='Options'
@@ -62,7 +63,8 @@ export const PostMenu = ({
                         </>
                     }
                 </MenuList>
-            </Menu>
+              </Menu>
+            }
         </Box>
     )
 }

@@ -1,24 +1,46 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm, Controller } from "react-hook-form";
-import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, HStack, Input, Text } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, HStack, Input, Text, useToast } from '@chakra-ui/react'
 
 import cl from './RegisterScreen.module.scss';
 import { RequiredMark } from '../../components/RequiredMark/RequiredMark';
 import { AccountAPI } from '../../../modules/accounts/account.api';
+import { toastSuccess } from '../../../utils/helpers/toasts';
 
 
 export const RegisterScreen = () => {
     const navigate = useNavigate();
+    const toast = useToast()
 
-    const { control, handleSubmit, formState: { errors, isValid } } = useForm({
+    const { control, handleSubmit, formState: { errors, isValid }, setError } = useForm({
         mode: "onBlur"
     });
 
     const onSubmit = async (data) => {
         const { fullname, username, email, password } = data;
-        await AccountAPI.createAccount( fullname, username, email, password, password);
-        navigate("/login");
+        try {
+          await AccountAPI.createAccount( fullname, username, email, password, password);
+          toast(toastSuccess({title: 'Регистрация прошла успешно'}));
+          navigate("/login", {state: {login: username}});
+        } catch (e) {
+          let error = e.response.data
+          switch (error.type) {
+            case "UsernameExists":
+              setError('username', { type: "custom", message: error.message })
+              break;
+            case "EmailExists":
+              setError('email', { type: "custom", message: error.message })
+              break;
+            case "ValidationError":
+              for (let err of error.errors) {
+                setError(err.context.key, { type: "custom", message: err.message })
+              }
+              break;
+            default:
+              break;
+          }
+        }
     }
 
     return (
@@ -38,7 +60,7 @@ export const RegisterScreen = () => {
                                     Полное имя<RequiredMark/>
                                 </FormLabel>
                                 <Input placeholder='John Doe' borderColor={errors.fullname && "red"} />
-                                {errors.fullname && <FormHelperText color="red.400">Поле обязательно к заполнению</FormHelperText>}
+                                {errors.fullname && <FormHelperText color="red.400">{errors.fullname.message || "Поле обязательно к заполнению"}</FormHelperText>}
                             </FormControl>
                         )}
                     />
@@ -52,7 +74,7 @@ export const RegisterScreen = () => {
                                     Никнейм<RequiredMark/>
                                 </FormLabel>
                                 <Input placeholder='jonhdoe' borderColor={errors.username && "red"} />
-                                {errors.username && <FormHelperText color="red.400">Поле обязательно к заполнению</FormHelperText>}
+                                {errors.username && <FormHelperText color="red.400">{errors.username.message || "Поле обязательно к заполнению"}</FormHelperText>}
                             </FormControl>
                         )}
                     />
@@ -66,7 +88,7 @@ export const RegisterScreen = () => {
                                     Почтовый адрес<RequiredMark/>
                                 </FormLabel>
                                 <Input placeholder='jonhdoe@example.com' type="email" borderColor={errors.email && "red"} />
-                                {errors.email && <FormHelperText color="red.400">Поле обязательно к заполнению</FormHelperText>}
+                                {errors.email && <FormHelperText color="red.400">{errors.email.message || "Поле обязательно к заполнению"}</FormHelperText>}
                             </FormControl>
                         )}
                     />
@@ -80,7 +102,7 @@ export const RegisterScreen = () => {
                                     Пароль<RequiredMark/>
                                 </FormLabel>
                                 <Input placeholder='********' type="password" borderColor={errors.password && "red"} />
-                                {errors.password && <FormHelperText color="red.400">Поле обязательно к заполнению</FormHelperText>}
+                                {errors.password && <FormHelperText color="red.400">{errors.password.message || "Поле обязательно к заполнению"}</FormHelperText>}
                             </FormControl>
                         )}
                     />

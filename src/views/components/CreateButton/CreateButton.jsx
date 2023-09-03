@@ -7,7 +7,7 @@ export const CreateButton = ({ title, onClick }) => {
     return (
         <Button
             rightIcon={<FontAwesomeIcon icon="fa-solid fa-plus" />}
-            colorScheme="blue"
+            colorScheme="teal"
             onClick={onClick}
         >
             { title }

@@ -5,14 +5,14 @@ import cl from "./UserAvatar.module.scss";
 
 
 
-export const UserAvatar = ({ src, name, subtitle, username }) => {
+export const UserAvatar = ({ src, name, subtitle, username, avatarSize }) => {
   return (
     <div className={cl.avatarContainer} >
         <HStack gap="5px">
             <AvatarChakra
                 src={src}
                 name={name}
-                size="md"
+                size={ avatarSize || "md" }
             />
             <AvatarDetails
                 name={name}

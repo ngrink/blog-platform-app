@@ -64,4 +64,9 @@ export class PostAPI {
         const { data } = await $axios.post(`/posts/${postId}/comments`, {...commentData});
         return data;
     }
+
+    static async deletePostComment(postId, commentId) {
+      const { data } = await $axios.delete(`/posts/${postId}/comments/${commentId}`);
+      return data;
+  }
 }

@@ -5,7 +5,7 @@ import { PostContainer } from '../../containers/PostContaner';
 
 export const PostScreen = () => {
     return (
-        <Box>
+        <Box w="100%">
             <PostContainer />
         </Box>
     )

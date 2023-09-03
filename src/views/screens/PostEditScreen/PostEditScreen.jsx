@@ -6,7 +6,7 @@ import { PostEditContainer } from '../../containers/PostEditContainer';
 
 export const PostEditScreen = () => {
     return (
-        <Box maxW="1000px" mx="auto">
+        <Box w="100%" maxW="1000px" mx="auto">
             <PostEditContainer />
         </Box>
     )

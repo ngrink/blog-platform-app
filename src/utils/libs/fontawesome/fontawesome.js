@@ -11,7 +11,11 @@ import {
     faPaperPlane,
     faFireFlameCurved,
     faClock,
-    faBookmark
+    faBookmark,
+    faUser,
+    faRightFromBracket,
+    faNoteSticky,
+    faRightToBracket
 } from "@fortawesome/free-solid-svg-icons";
 import {
     faMessage as faMessageRegular ,
@@ -37,5 +41,9 @@ library.add(
     faBookmark,
     faPenToSquare,
     faBookmark,
-    faBookmarkRegular
+    faBookmarkRegular,
+    faUser,
+    faNoteSticky,
+    faRightFromBracket,
+    faRightToBracket    
 )

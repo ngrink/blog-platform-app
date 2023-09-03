@@ -8,6 +8,8 @@ import { PostPreview } from '../PostPreview';
 import { PostFooter } from '../PostFooter';
 import { styles } from '../../../utils/libs/editorjs/editorjs.config';
 import cl from "./Post.module.scss";
+import { PostComments } from '../PostComments/PostComments';
+import { PostCommentsContainer } from '../../containers/PostCommentsContainer/PostCommentsContainer';
 
 
 export const Post = ({
@@ -22,6 +24,7 @@ export const Post = ({
     tags,
     likes,
     comments,
+    commentsData,
     views,
     isPostOwnedByUser,
     isPublished,
@@ -70,6 +73,13 @@ export const Post = ({
                     onLike={onLike}
                     onUnlike={onUnlike}
                 />
+            </Box>
+            <Box className={cl.cardContainer}>
+              <Box mt={16}>
+                <PostCommentsContainer
+                  postId={postId}
+                  comments={commentsData}/>
+              </Box>
             </Box>
         </Flex>
     )

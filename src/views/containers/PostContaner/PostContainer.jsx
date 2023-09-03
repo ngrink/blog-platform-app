@@ -12,10 +12,16 @@ export const PostContainer = () => {
     const { isLoading ,error, data } = useQuery(
         ['posts', postId],
         () => PostAPI.getPost(postId),
-        { staleTime: 60000 }
+        { staleTime: 0 }
     )
 
-    if (isLoading) {
+    const commentsData = useQuery(
+      ['posts', postId, 'comments'],
+      () => PostAPI.getPostComments(postId),
+      { staleTime: 0 }
+  )
+
+    if (isLoading || commentsData.isLoading) {
         return (
             <Spinner
                 thickness='4px'
@@ -32,6 +38,6 @@ export const PostContainer = () => {
     }
 
     return (
-        <Post {...data}/>
+        <Post {...data} commentsData={commentsData.data}/>
     )
 }

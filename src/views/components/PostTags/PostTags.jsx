@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Flex, Tag } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 
 export const PostTags = ({ tags }) => {
@@ -7,9 +8,11 @@ export const PostTags = ({ tags }) => {
         <Box>
             <Flex wrap="wrap" gap="10px">
                 {tags.map(tag => (
-                    <Tag key={tag} variant="subtle" fontSize={13}>
+                    <Link key={tag} to={`?search=${tag}`}>
+                      <Tag variant="subtle" fontSize={13}>
                         {tag}
-                    </Tag>
+                      </Tag>
+                    </Link>
                 ))}
             </Flex>
         </Box>

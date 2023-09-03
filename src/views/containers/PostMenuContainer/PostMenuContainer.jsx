@@ -72,10 +72,12 @@ export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished, isBo
 
     const onBookmarkPost = useCallback(() => {
         PostAPI.bookmarkPost(postId);
-    }, [postId])
+        queryClient.invalidateQueries(["posts", {"feed":"bookmarks"}])
+    }, [postId, queryClient])
     const onUnbookmarkPost = useCallback(() => {
         PostAPI.unbookmarkPost(postId);
-    }, [postId])
+        queryClient.invalidateQueries(["posts", {"feed":"bookmarks"}])
+    }, [postId, queryClient])
 
     return (
         <PostMenu
