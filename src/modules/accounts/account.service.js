@@ -31,7 +31,7 @@ export class AccountService {
         );
 
         if (validation.error) {
-            throw AccountError.BadRequest("Not all request fields are specified correctly", validation.error.details);
+            throw AccountError.ValidationError(validation.error.details);
         }
 
         const usernameExists = await AccountModel.findOne({username})
@@ -56,7 +56,7 @@ export class AccountService {
     }
 
     static async getProfile(accountId) {
-        const account = await AccountModel.findOne({accountId}, {profile: 1});
+        const account = await AccountModel.findOne({accountId}, {username: 1, profile: 1});
         return account.profile
     }
 

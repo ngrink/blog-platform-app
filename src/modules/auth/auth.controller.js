@@ -11,11 +11,11 @@ export class AuthController {
     static async login(req, res, next) {
         try {
             const { login, password } = req.body
-            const { accessToken, refreshToken } = await AuthService.login(login, password);
+            const { accountData, accessToken, refreshToken } = await AuthService.login(login, password);
 
             res.cookie('accessToken',  accessToken, cookieOptions);
             res.cookie('refreshToken', refreshToken, {...cookieOptions, path: "/api/auth/refresh"});
-            res.status(200).send("OK");
+            res.status(200).send(accountData);
         } catch (e) {
             next(e);
         }

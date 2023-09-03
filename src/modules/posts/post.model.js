@@ -33,7 +33,8 @@ const PostSchema = new Schema({
         count: { type: Number, default: 0 },
         items: [{
             author: { type: Schema.Types.ObjectId, ref: "Account" },
-            comment: { type: String }
+            comment: { type: String },
+            createdAt: { type: Date, default: Date.now() }
         }],
     },
     views: {

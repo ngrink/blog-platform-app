@@ -145,6 +145,18 @@ export class PostController {
         }
     }
 
+    static async deletePostComment(req, res, next) {
+      try {
+          const { accountId } = req.token;
+          const { postId, commentId } = req.params;
+
+          await PostService.deletePostComment(postId, commentId);
+          res.status(200).json("OK");
+      } catch (e) {
+          next(e);
+      }
+  }
+
     static async generateRandomPost(req, res, next) {
         try {
             const { accountId } = req.token;

@@ -3,26 +3,44 @@ import { ApiError } from "../../api.exceptions.js";
 
 export class AccountError extends ApiError {
     static AccountNotFound() {
-        return ApiError.NotFound("Account not found");
+        return ApiError.NotFound(
+          "AccountNotFound",
+          "Account not found"
+        );
     }
 
     static UsernameExists() {
-        return ApiError.BadRequest("User with that username already exists");
+        return ApiError.BadRequest(
+          "UsernameExists",
+          "User with that username already exists"
+        );
     }
 
     static EmailExists() {
-        return ApiError.BadRequest("User with that email already exists");
+        return ApiError.BadRequest(
+          "EmailExists",
+          "User with that email already exists"
+        );
     }
 
     static UserNotFound() {
-        return ApiError.NotFound("User not found");
+        return ApiError.NotFound(
+          "UserNotFound",
+          "User not found"
+        );
     }
 
     static UserAlreadyFollowed() {
-        return ApiError.BadRequest("User is already followed");
+        return ApiError.BadRequest(
+          "UserAlreadyFollowed",
+          "User is already followed"
+        );
     }
 
     static UserNotFollowed() {
-        return ApiError.BadRequest("User has not been added to the followed");
+        return ApiError.BadRequest(
+          "UserNotFollowed",
+          "User has not been added to the followed"
+        );
     }
 }

@@ -57,6 +57,11 @@ router.post("/:postId/comments",
     [AuthMiddleware.authorized],
     PostController.createPostComment
 )
+router.delete("/:postId/comments/:commentId",
+    [AuthMiddleware.authorized],
+    PostController.deletePostComment
+)
+
 router.post("/generate",
     [AuthMiddleware.authorized],
     PostController.generateRandomPost

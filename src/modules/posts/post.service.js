@@ -47,8 +47,8 @@ export class PostService {
         const feedOptions = {
             "popular": {},
             "new": {},
-            "followed": {author: { $in: account.follows?.items }},
-            "bookmarks": {_id: { $in: account.bookmarks?.items }},
+            "followed": {author: { $in: account?.follows?.items }},
+            "bookmarks": {_id: { $in: account?.bookmarks?.items }},
             "drafts": {author: accountId, isPublished: false},
         }
 
@@ -98,7 +98,7 @@ export class PostService {
         );
 
         paginatedPosts.docs = paginatedPosts.docs.map(post => {
-            const postData = PostService._computePostFields(account, post._doc)
+            const postData = PostService._computePostFields(account, post.toObject())
             return postData
         })
 
@@ -117,7 +117,7 @@ export class PostService {
         }
 
         const account = await AccountModel.findById(accountId, { bookmarks: 1 });
-        const postData = PostService._computePostFields(account, post._doc);
+        const postData = PostService._computePostFields(account, post.toObject());
 
         post.views += 1;
         post.save();
@@ -197,12 +197,15 @@ export class PostService {
     }
 
     static async getPostComments(accountId, postId) {
-        const post = await PostModel.findById(postId, {comments: 1});
+        const post = await PostModel
+          .findById(postId, {comments: 1})
+          .populate("comments.items.author", {username: 1, "profile.fullname": 1, "profile.avatar": 1})
+
         if (!post) {
             throw PostError.PostNotFound();
         }
 
-        const comments = post._doc.comments;
+        const comments = post.toObject().comments;
         comments.isCommentedByUser = comments.items.filter(c => c.author === accountId) > 0;
         return comments
     }
@@ -223,6 +226,18 @@ export class PostService {
         }
     }
 
+    static async deletePostComment(postId, commentId) {
+      const post = await PostModel.findById(postId);
+
+      if (!post) {
+        throw PostError.PostNotFound();
+    }
+
+      post.comments.count -= 1;
+      post.comments.items.pull({_id: commentId})
+      post.save();
+  }
+
     static async _checkPostOwner(postId, accountId) {
         return await PostModel.exists({
             postId,
@@ -231,13 +246,15 @@ export class PostService {
     }
 
     static _computePostFields(account, post) {
-        const accountId = account._id;
-        const postId = post._id;
+        if (account) {
+            const accountId = account.id;
+            const postId = post._id;
 
-        post.isPostOwnedByUser = post.author._id == accountId
-        post.isBookmarked = account.bookmarks.items.includes(postId);
-        post.likes.isLikedByUser =  post.likes.items.includes(accountId);
-        post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
+            post.isPostOwnedByUser = post.author._id == accountId
+            post.isBookmarked = account.bookmarks.items.includes(postId);
+            post.likes.isLikedByUser = post.likes.items.includes(accountId);
+            post.comments.isCommentedByUser = post.comments.items.filter(c => c.author == accountId).length > 0;
+        }
         delete post.likes.items;
         delete post.comments.items;
 
@@ -401,11 +418,12 @@ export class PostService {
         const tags = tagsData.sort(() => 0.5 - Math.random()).slice(0, tn)
 
         let preview;
-        const isPreview = Math.random() <= 0.4;
+        const isPreview = Math.random() <= 0.7;
 
         if (isPreview) {
-            const pn = Math.round(Math.random() * 1000);
-            preview = `https://picsum.photos/id/${pn}/640/400`;
+            const id = Math.round(Math.random() * 98 + 1);
+            // preview = `https://picsum.photos/id/${id}/640/400`;
+            preview = `https://lipsum.app/id/${id}/640x400`;
         }
 
         const body = {
