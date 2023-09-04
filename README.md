@@ -5,7 +5,7 @@
 
 ## Demo
 <!-- [TODO] Vercel, Netlify, Heroku -->
-![blog-platform-app-preview](https://github.com/ngrink/blog-platform-app/assets/47951318/95dd2dd0-3273-4cd3-bc2b-04777ee22aa3)
+![blog-platform-app-preview-1](https://github.com/ngrink/blog-platform-app/assets/47951318/f8a767d2-f2e4-4ba4-b719-cce83e1c8c2b)
 
 ## Features
 - Registration, authorization
