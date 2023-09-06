@@ -5,9 +5,9 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node --experimental-specifier-resolution=node src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --experimental-specifier-resolution=node src/server.js",
     "debug": "cross-env DEBUG=express* NODE_ENV=development nodemon --inspect --experimental-specifier-resolution=node src/server.js",
+    "prod": "cross-env NODE_ENV=production node --experimental-specifier-resolution=node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ngrink",
