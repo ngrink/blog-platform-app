@@ -4,7 +4,8 @@
 > Related services: DTF, Yandex.Zen, Vkontakte, Pikabu, Habr, Medium, Tumblr
 
 ## Demo
-<!-- [TODO] Vercel, Netlify, Heroku -->
+[Link to demo](https://blog-platform-app.ngrink.ru)
+
 ![blog-platform-app-preview-1](https://github.com/ngrink/blog-platform-app/assets/47951318/f8a767d2-f2e4-4ba4-b719-cce83e1c8c2b)
 
 ## Features
