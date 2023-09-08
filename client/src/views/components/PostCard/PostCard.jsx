@@ -44,7 +44,7 @@ export const PostCard = ({
             </VStack>
             <Link to={`/posts/${postId}`}>
                 <Box className={cl.cardContainer} py="16px">
-                    <VStack gap="12px" alignItems="flex-start">
+                    <VStack gap="16px" alignItems="flex-start">
                         <Heading fontSize="26px" noOfLines={3}>{title}</Heading>
                         <Text>{description}</Text>
                     </VStack>

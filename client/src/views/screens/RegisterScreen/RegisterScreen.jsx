@@ -109,7 +109,7 @@ export const RegisterScreen = () => {
                     <Button disabled={!isValid} type="submit" w="100%" colorScheme="teal">
                         Зарегистрироваться
                     </Button>
-                    <HStack gap="0px">
+                    <HStack gap="4px">
                         <Text>Уже есть аккаунт?</Text>
                         <Link to="/login" className={cl.link}>Авторизоваться</Link>
                     </HStack>

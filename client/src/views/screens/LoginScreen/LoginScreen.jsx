@@ -78,7 +78,7 @@ export const LoginScreen = () => {
                     <Button disabled={!isValid} type="submit" w="100%" colorScheme="teal">
                         Авторизоваться
                     </Button>
-                    <HStack gap="0px">
+                    <HStack gap="4px">
                         <Text>Нет аккаунта?</Text>
                         <Link to="/register" className={cl.link}>Зарегистрироваться</Link>
                     </HStack>
