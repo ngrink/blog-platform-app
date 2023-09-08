@@ -56,12 +56,10 @@ export const PostCardListContainer = observer(({ feed }) => {
     // const likeMutation = useMutation({
     //     mutationFn: (postId) => PostAPI.likePost(postId),
     //     onMutate: async (postId) => {
-    //         debugger;
     //         await queryClient.cancelQueries({ queryKey: ['posts', { feed }] })
     //         const previousPosts = queryClient.getQueryData(['posts', { feed }])
 
     //         queryClient.setQueryData(['posts', { feed }], (data) => {
-    //         debugger;
 
     //         return ({
     //             ...data, docs: data.docs.map(post => {

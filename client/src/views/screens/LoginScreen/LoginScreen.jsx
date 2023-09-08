@@ -25,8 +25,6 @@ export const LoginScreen = () => {
         const { login, password } = data;
         try {
             const accountData = await AuthAPI.login(login, password);
-            console.log(accountData);
-            debugger;
             const redirect = location.state?.from || "/";
 
             setAuth(accountData);
