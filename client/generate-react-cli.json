@@ -5,56 +5,56 @@
   "testLibrary": "None",
   "component": {
     "default": {
-        "customTemplates": {
-            "component": "templates/component/TemplateName.jsx",
-            "style": "templates/component/TemplateName.module.scss",
-            "index": "templates/component/index.js"
-        },
-        "path": "src/views/components",
-        "withStyle": true,
-        "withTest": false,
-        "withStory": false,
-        "withLazy": false,
-        "withIndex": true
+      "customTemplates": {
+        "component": "templates/component/TemplateName.jsx",
+        "style": "templates/component/TemplateName.module.scss",
+        "index": "templates/component/index.js"
+      },
+      "path": "src/views/components",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false,
+      "withIndex": true
     },
     "container": {
-        "customTemplates": {
-            "component": "templates/container/TemplateName.jsx",
-            "index": "templates/container/index.js"
-        },
-        "path": "src/views/containers",
-        "withStyle": false,
-        "withTest": false,
-        "withStory": false,
-        "withLazy": false,
-        "withIndex": true
+      "customTemplates": {
+        "component": "templates/container/TemplateName.jsx",
+        "index": "templates/container/index.js"
+      },
+      "path": "src/views/containers",
+      "withStyle": false,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false,
+      "withIndex": true
     },
     "layout": {
-        "customTemplates": {
-            "component": "templates/layout/TemplateName.jsx",
-            "style": "templates/layout/TemplateName.module.scss",
-            "index": "templates/layout/index.js"
-        },
-        "path": "src/views/layouts",
-        "withStyle": true,
-        "withTest": false,
-        "withStory": false,
-        "withLazy": false,
-        "withIndex": true
-
+      "customTemplates": {
+        "component": "templates/layout/TemplateName.jsx",
+        "style": "templates/layout/TemplateName.module.scss",
+        "index": "templates/layout/index.js"
+      },
+      "path": "src/views/layouts",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false,
+      "withIndex": true
     },
     "screen": {
-        "customTemplates": {
-            "component": "templates/screen/TemplateName.jsx",
-            "style": "templates/screen/TemplateName.module.scss",
-            "index": "templates/screen/index.js"
-        },
-        "path": "src/views/screens",
-        "withStyle": true,
-        "withTest": false,
-        "withStory": false,
-        "withLazy": false,
-        "withIndex": true
+      "customTemplates": {
+        "component": "templates/screen/TemplateName.jsx",
+        "style": "templates/screen/TemplateName.module.scss",
+        "index": "templates/screen/index.js"
+      },
+      "path": "src/views/screens",
+      "withStyle": true,
+      "withTest": false,
+      "withStory": false,
+      "withLazy": false,
+      "withIndex": true
     }
-  }
+  },
+  "usesStyledComponents": false
 }
