@@ -15,11 +15,12 @@ export const LoginScreen = () => {
     const [ isChangedAfterSubmit, setIsChangedAfterSubmit ] = useState(false);
     const { setAuth } = useAuth();
 
-    const { control, handleSubmit, formState: { errors, isValid } } = useForm({
-        mode: "onBlur"
+    const { control, handleSubmit, formState: { errors, isValid }} = useForm({
+        mode: "onBlur",
+        defaultValues: {
+            login: location.state?.login || "",
+        }
     });
-
-    console.log(location.state?.login);
 
     const onSubmit = async (data) => {
         const { login, password } = data;
@@ -52,7 +53,7 @@ export const LoginScreen = () => {
                                 <FormLabel>
                                     Логин<RequiredMark/>
                                 </FormLabel>
-                                <Input borderColor={errors.login && "red"} defaultValue={location.state?.login} />
+                                <Input borderColor={errors.login && "red"} defaultValue={field.value} />
                                 {errors.login && <FormHelperText color="red.400">Поле обязательно к заполнению</FormHelperText>}
                             </FormControl>
                         )}
