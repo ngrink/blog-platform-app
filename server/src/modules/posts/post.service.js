@@ -89,8 +89,9 @@ export class PostService {
                 "populate": {
                     path: 'author',
                     select: {
-                        username: 1,
-                        profile: {fullname: 1, avatar: 1}
+                        'username': 1,
+                        'profile.fullname': 1, 
+                        'profile.avatar': 1
                     }
                 },
                 ...paginateOptions[feed],
@@ -108,8 +109,10 @@ export class PostService {
     static async getPost(accountId, postId) {
         const post = await PostModel.findById(postId)
             .populate("author", {
-                username: 1,
-                profile: {fullname: 1, avatar: 1, username: 1}
+                "username": 1,
+                "profile.fullname": 1, 
+                "profile.avatar": 1, 
+                "profile.username": 1
             });
 
         if (!post) {
