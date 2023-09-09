@@ -25,6 +25,7 @@ export const PostHeader = ({
             <Spacer />
             <PostMenuContainer
                 postId={postId}
+                author={author}
                 isPostOwnedByUser={isPostOwnedByUser}
                 isPublished={isPublished}
                 isBookmarked={isBookmarked}

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, HStack, Input, Text } from '@chakra-ui/react';
 
-import { AuthAPI, useAuth } from "../../../modules/auth";
+import { AuthService, useAuth } from "../../../modules/auth";
 import { RequiredMark } from '../../components/RequiredMark/RequiredMark';
 import cl from './LoginScreen.module.scss';
 
@@ -25,7 +25,7 @@ export const LoginScreen = () => {
     const onSubmit = async (data) => {
         const { login, password } = data;
         try {
-            const accountData = await AuthAPI.login(login, password);
+            const accountData = await AuthService.login(login, password);
             const redirect = location.state?.from || "/";
 
             setAuth(accountData);

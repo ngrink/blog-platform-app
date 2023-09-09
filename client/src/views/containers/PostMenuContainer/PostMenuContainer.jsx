@@ -1,14 +1,18 @@
 import React, { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { observer } from 'mobx-react-lite';
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useToast } from '@chakra-ui/react'
 
+import { AccountService } from '../../../modules/accounts';
 import { PostAPI } from '../../../modules/posts'
 import { PostMenu } from '../../components/PostMenu/PostMenu'
 import { toastError, toastInfo, toastSuccess } from '../../../utils/helpers/toasts'
+import { useStore } from '../../../app/store';
 
 
-export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished, isBookmarked }) => {
+export const PostMenuContainer = observer(({ postId, author, isPostOwnedByUser, isPublished, isBookmarked }) => {
+    const { AccountStore } = useStore();
     const location = useLocation();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -74,21 +78,35 @@ export const PostMenuContainer = ({ postId, isPostOwnedByUser, isPublished, isBo
         PostAPI.bookmarkPost(postId);
         queryClient.invalidateQueries(["posts", {"feed":"bookmarks"}])
     }, [postId, queryClient])
+
     const onUnbookmarkPost = useCallback(() => {
         PostAPI.unbookmarkPost(postId);
         queryClient.invalidateQueries(["posts", {"feed":"bookmarks"}])
     }, [postId, queryClient])
+
+    const onfollowUser = useCallback(() => {
+        AccountService.followUser(author._id);
+    }, [author])
+
+    const onunfollowUser = useCallback(() => {
+        AccountService.unfollowUser(author._id);
+    }, [author])
+
+    const isFollowed = AccountStore.follows?.items?.includes(author._id)
 
     return (
         <PostMenu
             postId={postId}
             isPostOwnedByUser={isPostOwnedByUser}
             isPublished={isPublished}
+            isFollowed={isFollowed}
             isBookmarked={isBookmarked}
             onDeletePost={onDeletePost}
             onPublishPost={onPublishPost}
             onBookmarkPost={onBookmarkPost}
             onUnbookmarkPost={onUnbookmarkPost}
+            onfollowUser={onfollowUser}
+            onunfollowUser={onunfollowUser}
         />
     )
-}
+})

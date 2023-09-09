@@ -5,7 +5,7 @@ import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, HStack, I
 
 import cl from './RegisterScreen.module.scss';
 import { RequiredMark } from '../../components/RequiredMark/RequiredMark';
-import { AccountAPI } from '../../../modules/accounts/account.api';
+import { AccountService } from '../../../modules/accounts';
 import { toastSuccess } from '../../../utils/helpers/toasts';
 
 
@@ -20,7 +20,7 @@ export const RegisterScreen = () => {
     const onSubmit = async (data) => {
         const { fullname, username, email, password } = data;
         try {
-          await AccountAPI.createAccount( fullname, username, email, password, password);
+          await AccountService.createAccount( fullname, username, email, password, password);
           toast(toastSuccess({title: 'Регистрация прошла успешно'}));
           navigate("/login", {state: {login: username}});
         } catch (e) {

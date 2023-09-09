@@ -10,6 +10,7 @@ import { StoreContext, store } from './app/store';
 import { AuthProvider } from './modules/auth/auth.context';
 import { App } from './App';
 import { theme } from './utils/libs/chakra';
+import { ToastContainer } from './utils/libs/chakra/toast';
 import './utils/libs/fontawesome';
 import './assets/css/index.css';
 
@@ -33,6 +34,7 @@ root.render(
             <BrowserRouter>
                 <AuthProvider>
                     <App />
+                    <ToastContainer />
                 </AuthProvider>
             </BrowserRouter>
         </ChakraProvider>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AuthAPI, useAuth } from '../../../modules/auth'
+import { AuthService, useAuth } from '../../../modules/auth'
 
 import { ProfileNavigation } from '../../components/ProfileNavigation'
 
@@ -10,7 +10,7 @@ export const ProfileNavigationContainer = () => {
  const { resetAuth } = useAuth()
 
     const onLogout = async () => {
-        await AuthAPI.logout();
+        await AuthService.logout();
         resetAuth();
         navigate('/');
     }

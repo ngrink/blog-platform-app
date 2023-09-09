@@ -8,11 +8,14 @@ export const PostMenu = ({
     postId,
     isPostOwnedByUser,
     isPublished,
+    isFollowed,
     isBookmarked: initialIsBookmarked,
     onDeletePost,
     onPublishPost,
     onBookmarkPost,
     onUnbookmarkPost,
+    onfollowUser,
+    onunfollowUser
 }) => {
     const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
 
@@ -30,7 +33,6 @@ export const PostMenu = ({
                     : () => {onBookmarkPost(); setIsBookmarked(true)}
                 }
             />
-            {isPostOwnedByUser &&
               <Menu>
                 <MenuButton
                     as={IconButton}
@@ -39,6 +41,22 @@ export const PostMenu = ({
                     variant='ghost'
                 />
                 <MenuList>
+                    {!isPostOwnedByUser && 
+                        (isFollowed 
+                            ? <MenuItem
+                                icon={<FontAwesomeIcon icon="fa-solid fa-user-plus" />}
+                                onClick={onunfollowUser}
+                            >
+                                Отписаться от автора
+                            </MenuItem>
+                            : <MenuItem
+                                icon={<FontAwesomeIcon icon="fa-solid fa-user-plus" />}
+                                onClick={onfollowUser}
+                            >
+                                Подписаться на автора
+                            </MenuItem>
+                        )
+                    }
                     {isPostOwnedByUser &&
                         <>
                             {!isPublished &&
@@ -64,7 +82,6 @@ export const PostMenu = ({
                     }
                 </MenuList>
               </Menu>
-            }
         </Box>
     )
 }

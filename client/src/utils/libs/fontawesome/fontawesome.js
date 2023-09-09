@@ -15,7 +15,8 @@ import {
     faUser,
     faRightFromBracket,
     faNoteSticky,
-    faRightToBracket
+    faRightToBracket,
+    faUserPlus
 } from "@fortawesome/free-solid-svg-icons";
 import {
     faMessage as faMessageRegular ,
@@ -45,5 +46,6 @@ library.add(
     faUser,
     faNoteSticky,
     faRightFromBracket,
-    faRightToBracket    
+    faRightToBracket,
+    faUserPlus
 )

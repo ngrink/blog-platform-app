@@ -1,3 +1,4 @@
+export { AuthService } from './auth.service';
 export { AuthAPI } from './auth.api';
 export { AuthContext, AuthProvider, useAuth } from './auth.context';
 

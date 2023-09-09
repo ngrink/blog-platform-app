@@ -7,10 +7,10 @@ export const theme = extendTheme({
         global: (props) => ({
             body: {
                 bg: mode("#eee", null)(props),
-                // bg: mode("#fff8ee", null)(props),
-                // bg: mode("#0a163a", null)(props),
                 color: mode("#fff", null)(props),
             },
         })
     },
 })
+
+

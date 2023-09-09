@@ -56,8 +56,8 @@ export class AccountService {
     }
 
     static async getProfile(accountId) {
-        const account = await AccountModel.findOne({accountId}, {username: 1, profile: 1});
-        return account.profile
+        const account = await AccountModel.findById(accountId, {username: 1, profile: 1, follows: 1, bookmarks: 1});
+        return account
     }
 
     static async updateProfile(accountId, data) {
