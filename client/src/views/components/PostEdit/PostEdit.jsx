@@ -16,14 +16,14 @@ export const PostEdit = ({
 }) => {
     const [title, setTitle] = useState(initialTitle);
     const [description, setDescription] = useState(initialDescription);
-    const [tags, setTags] = useState(initialTags?.join(', ') || []);
+    const [tags, setTags] = useState(initialTags?.join(', '));
     const [preview, setPreview] = useState(initialPreview);
 
     const onSubmitHandler = async () => {
         onSubmit({
             title, 
             description, 
-            tags: tags.split(',').map(tag => tag.trim()), 
+            tags: tags?.split(',').map(tag => tag.trim()), 
             preview
         });
     }
