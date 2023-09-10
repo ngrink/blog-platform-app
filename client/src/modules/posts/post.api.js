@@ -21,7 +21,15 @@ export class PostAPI {
     }
 
     static async updatePost(postId, postData) {
-        const { data } = await $axios.patch(`/posts/${postId}`, {...postData});
+        const formData = new FormData();
+
+        formData.append("title", postData.title);
+        formData.append("description", postData.description || "");
+        formData.append("tags", postData.tags);
+        formData.append("content", JSON.stringify(postData.content));
+        formData.append("preview", postData.preview);
+
+        const { data } = await $axios.patch(`/posts/${postId}`, formData);
         return data;
     }
 

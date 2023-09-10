@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import * as dotenv from 'dotenv';
@@ -8,15 +9,21 @@ import * as dotenv from 'dotenv';
 import { router } from "./server.router";
 import { errorHandler } from "./error.handler";
 import { PostService } from "./modules/posts";
+import { FileService } from "./utils/file/file.service";
 
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 process.env.DEVELOPMENT = process.env.NODE_ENV === "development";
 
 const app = express();
+app.use("/storage", express.static(FileService.storagePath));
 app.use(morgan("dev"))
-app.use(express.json());
+app.use(express.json({ limit: "20mb"}));
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+    createParentPath: true
+}));
 app.use(cookieParser());
 app.use(cors({
     origin: true,

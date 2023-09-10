@@ -1,3 +1,4 @@
+import { FileService } from "../../utils/file/file.service";
 import { PostService } from "./post.service";
 
 
@@ -40,10 +41,22 @@ export class PostController {
 
     static async updatePost(req, res, next) {
         try {
+            const { accountId } = req.token;
             const { postId } = req.params;
             const data = req.body;
+            const preview = req.files?.preview;
+            let previewPath;
 
-            const updated = await PostService.updatePost(postId, data);
+            if (preview) {
+                previewPath = await FileService.saveUserFile(accountId, preview);
+            }
+
+            const updated = await PostService.updatePost(postId, {
+                ...data, 
+                tags: data.tags.split(","), 
+                content: JSON.parse(data.content), 
+                preview: preview ? FileService.relativeToProjectPath(previewPath) : null
+            });
             res.status(200).json(updated);
         } catch (e) {
             next(e);

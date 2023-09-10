@@ -29,7 +29,7 @@ export class PostValidator {
             content: Joi.object(),
             tags: Joi.array(),
             description: Joi.string(),
-            preview: Joi.string()
+            preview: Joi.string().allow(null)
         }).validate(data, { abortEarly: false, allowUnknown: false });
 
         if (validation.error) {
