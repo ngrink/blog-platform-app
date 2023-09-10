@@ -57,3 +57,16 @@
 
     background-color: #fff;
 }
+
+.tagsInput {
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    border-radius: 0;
+    outline: none;
+
+    &:focus {
+        outline: none;
+        border: none;
+    }
+}

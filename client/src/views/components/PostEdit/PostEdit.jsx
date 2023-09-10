@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Editable, EditablePreview, EditableTextarea, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Editable, EditablePreview, EditableTextarea, Heading, Input, Text } from '@chakra-ui/react';
 
 import cl from "./PostEdit.module.scss";
 
@@ -16,11 +16,16 @@ export const PostEdit = ({
 }) => {
     const [title, setTitle] = useState(initialTitle);
     const [description, setDescription] = useState(initialDescription);
-    const [tags, setTags] = useState(initialTags);
+    const [tags, setTags] = useState(initialTags?.join(', ') || []);
     const [preview, setPreview] = useState(initialPreview);
 
     const onSubmitHandler = async () => {
-        onSubmit({title, description, tags, preview});
+        onSubmit({
+            title, 
+            description, 
+            tags: tags.split(',').map(tag => tag.trim()), 
+            preview
+        });
     }
 
     return (
@@ -32,12 +37,18 @@ export const PostEdit = ({
                     </Heading>
                     <EditableTextarea onChange={(e => setTitle(e.target.value))} fontSize="30px" fontWeight="700" lineHeight="1.2" />
                 </Editable>
-                <Editable defaultValue={description} placeholder="Описание поста">
+                <Editable defaultValue={description} placeholder="Описание поста" pb="16px">
                     <Text>
                         <EditablePreview />
                     </Text>
                     <EditableTextarea onChange={(e => setDescription(e.target.value))} minHeight="160px"/>
                 </Editable>
+                <input 
+                    className={cl.tagsInput}
+                    placeholder='Тег1, Тег2, Тег3, ...'
+                    value={tags}
+                    onChange={(e) => setTags(e.target.value)}
+                />
             </Box>
             <Box ml="-100px" className={cl.editorContainer}>
                 { editor }
