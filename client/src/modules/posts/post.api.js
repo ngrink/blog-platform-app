@@ -3,7 +3,15 @@ import { $axios } from "../../utils/libs/axios";
 
 export class PostAPI {
     static async createPost(postData) {
-        const { data } = await $axios.post(`/posts/`, {...postData});
+        const formData = new FormData();
+
+        formData.append("title", postData.title);
+        formData.append("description", postData.description || "");
+        formData.append("tags", postData.tags);
+        formData.append("content", JSON.stringify(postData.content));
+        formData.append("preview", postData.preview);
+
+        const { data } = await $axios.post(`/posts/`, formData);
         return data;
     }
 

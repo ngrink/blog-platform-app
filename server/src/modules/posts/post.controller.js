@@ -7,8 +7,20 @@ export class PostController {
         try {
             const { accountId } = req.token
             const body = req.body;
+            const preview = req.files?.preview;
+            let previewPath;
 
-            const post = await PostService.createPost({author: accountId, ...body});
+            if (preview) {
+                previewPath = await FileService.saveUserFile(accountId, preview);
+            }
+
+            const post = await PostService.createPost({
+                ...body, 
+                tags: body.tags.split(","), 
+                content: JSON.parse(body.content), 
+                author: accountId, 
+                preview: previewPath? FileService.relativeToProjectPath(previewPath) : null
+            });
             res.status(201).json(post);
         } catch (e) {
             next(e);
