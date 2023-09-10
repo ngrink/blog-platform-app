@@ -4,6 +4,7 @@ import morgan from "morgan";
 import fileUpload from "express-fileupload";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { rateLimit } from 'express-rate-limit';
 import * as dotenv from 'dotenv';
 
 import { router } from "./server.router";
@@ -17,6 +18,10 @@ process.env.DEVELOPMENT = process.env.NODE_ENV === "development";
 
 const app = express();
 app.use("/storage", express.static(FileService.storagePath));
+app.use(rateLimit({
+    windowMs: 60000,
+    max: 100
+}));
 app.use(morgan("dev"))
 app.use(express.json({ limit: "20mb"}));
 app.use(express.urlencoded({ extended: true }));
@@ -48,6 +53,8 @@ async function main() {
             ? console.log(`[Server]`, error)
             : console.log(`[Server] Server is started on PORT ${PORT}`)
         );
+
+        PostService._generateRandomPost("64fcd0b3122d23c017c925e6");
         setInterval(() => {
           PostService._computeAndPersistPostRatings();
         }, 1000 * 60 * 60)
