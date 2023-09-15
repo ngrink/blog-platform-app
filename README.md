@@ -17,6 +17,7 @@
 - Adding posts to bookmarks
 - Creating, modifying, publishing, deleting articles
 - Advanced block editor, markdown markup language
+- Drag-and-Drop image uploading
 
 <!-- 
 - [TODO] Для ленты популярное указание диапазона времени
