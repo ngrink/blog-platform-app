@@ -17,6 +17,8 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 process.env.DEVELOPMENT = process.env.NODE_ENV === "development";
 
 const app = express();
+app.set('trust proxy', 'loopback') 
+
 app.use("/storage", express.static(FileService.storagePath));
 app.use(rateLimit({
     windowMs: 60000,
@@ -54,7 +56,7 @@ async function main() {
             : console.log(`[Server] Server is started on PORT ${PORT}`)
         );
 
-        PostService._generateRandomPost("64fcd0b3122d23c017c925e6");
+        PostService._generateRandomPost("6506cb30ef34d20a03bfca42");
         setInterval(() => {
           PostService._computeAndPersistPostRatings();
         }, 1000 * 60 * 60)
